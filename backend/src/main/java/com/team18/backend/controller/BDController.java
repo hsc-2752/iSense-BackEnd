@@ -37,15 +37,22 @@ public class BDController {
     }
 
     /**
-     * Calculate BMI based on height and weight sent from the front end
-     * @return BMI
+     * Returns the data from the front end to the Service layer for assignment
      */
     //TODO improve method body and return value
-    @RequestMapping(value = "/getBD/BMI",method = RequestMethod.POST)
-    public double getBMIdata(@RequestParam("weight") double weight,
+    @RequestMapping(value = "/getBD/assignBody",method = RequestMethod.POST)
+    public void assignBody(@RequestParam("weight") double weight,
                          @RequestParam("height") double height){
-        return weight/(height*height);
-    }
 
+    }
+    /**
+     * Get the BMI results from the Service layer and return to the front end
+     */
+    //TODO improve method body and return value based on service class
+    @RequestMapping(value = "/getBD/BMI",method = RequestMethod.GET)
+    public double bmiMapper(){
+        double temp = 1.0;
+        return temp;
+    }
 
 }
