@@ -1,20 +1,17 @@
 package com.team18.backend.mapper;
 
-import com.team18.backend.pojo.BodyData;
+import com.team18.backend.pojo.HealthData;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-/**
- *
- */
+
 @Mapper
-public interface BDataMapper {
+public interface HealthMapper {
     //TODO: add SQL statement
     @Select("")
-    List<BodyData> findAll();
+    List<HealthData> findAll();
 
     //TODO: add SQL statement
     @Select("")
