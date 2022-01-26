@@ -22,16 +22,7 @@ public class HealthController {
         return healthMapper.findAll();
     }
 
-    /**
-     * Obtain sleep time from service layer, and return it to the front end
-     * @return sleep time
-     */
-    //TODO change return type once service layer complete
-   @RequestMapping(value = "/getHealthData/Sleep",method = RequestMethod.GET)
-   @ResponseBody
-   public String sleepTime(){
-        return "deep sleep:5;paradox sleep:2";
-   }
+
     /**
      * Returns the data from the front end to the Service layer for assignment
      */
@@ -51,4 +42,22 @@ public class HealthController {
         return temp;
     }
 
+    /**
+     * 获取用户是否睡眠中途被噪音和光照吵醒
+     */
+    //TODO
+    @RequestMapping(value = "/getHealthData/assignFlag",method = RequestMethod.POST)
+    public void assignFlag(@RequestParam("isAwakenByNoisy") boolean isAwakenByNoisy){
+
+    }
+    /**
+     * Obtain sleep time from service layer, and return it to the front end
+     * @return sleep time 返回类型暂时是字符串，service完成改成睡眠数据对象
+     */
+    //TODO change return type once service layer complete
+    @RequestMapping(value = "/getHealthData/Sleep",method = RequestMethod.GET)
+    @ResponseBody
+    public String sleepTime(){
+        return "deep sleep:5;paradox sleep:2";
+    }
 }

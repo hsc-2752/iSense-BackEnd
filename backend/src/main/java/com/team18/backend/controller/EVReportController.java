@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-public class EnvironmentReportController {
+public class EVReportController {
 
     /**
      * Obtain overall report from service layer, return it to the front end

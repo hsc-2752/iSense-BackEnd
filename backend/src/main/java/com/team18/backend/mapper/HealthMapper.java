@@ -10,14 +10,18 @@ import java.util.List;
 @Mapper
 public interface HealthMapper {
     //TODO: add SQL statement
-    @Select("")
+    @Select("SELECT HeartRate, BOS from ArduinoDB.MEGA_data order by MEGAid limit 1;")
     List<HealthData> findAll();
 
-    //TODO: add SQL statement
-    @Select("")
-    String findHeartRate();
+//
+//    @Select("")
+//    String findHeartRate();
+//
+//
+//    @Select("")
+//    String findBloodOxygen();
 
-    //TODO: add SQL statement
+    //TODO add SQL statement
     @Select("")
-    String findBloodOxygen();
+    String findSleep();
 }
