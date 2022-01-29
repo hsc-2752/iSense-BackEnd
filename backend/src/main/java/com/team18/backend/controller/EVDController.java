@@ -3,10 +3,7 @@ package com.team18.backend.controller;
 import com.team18.backend.mapper.EVDataMapper;
 import com.team18.backend.pojo.EnvironmentData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,51 +18,43 @@ public class EVDController {
         List<EnvironmentData> environmentData = evDataMapper.findAll();
         return environmentData;
     }
-
     /**
-     * Obtain temperature and humidity data in response to front-end acquisition request
-     * @return latest temperature and humidity data
+     * 获取前端发送的时间(温度)
      */
-    @RequestMapping(value = "/getEVD/TemAndHum",method = RequestMethod.GET)
-    @ResponseBody
-    public List<String> temAndHumMapper(){
-        List<String> temAndHumData = evDataMapper.findTemHum();
-        return temAndHumData;
+    @RequestMapping(value =  "/getTime/tem",method = RequestMethod.POST)
+    public String getTemperature(@RequestParam("temTime")String temTime){
+        return evDataMapper.findTem(temTime);
+    }
+    /**
+     * 获取前端发送的时间(湿度)
+     */
+    @RequestMapping(value =  "/getTime/hum",method = RequestMethod.POST)
+    public String getHumidity( @RequestParam("humTime")String humTime){
+        return evDataMapper.findHum(humTime);
     }
 
     /**
-     * Obtain indoor pressure data in response to front-end acquisition request
-     * @return latest indoor pressure data
+     * 获取前端发送的时间(空气质量)
      */
-    @RequestMapping(value = "/getEVD/Pressure",method = RequestMethod.GET)
-    public String pressureMapper(){
-        return evDataMapper.findPressure();
+    @RequestMapping(value =  "/getTime/airQuality",method = RequestMethod.POST)
+    public String getAirQuality(@RequestParam("airTime")String airTime){
+        return evDataMapper.findHCHO(airTime);
+    }
+    /**
+     * 获取前端发送的时间(光照)
+     */
+    @RequestMapping(value =  "/getTime/brightness",method = RequestMethod.POST)
+    public String getBrightness(@RequestParam("brightTime")String brightTime){
+        return evDataMapper.findBrightness(brightTime);
+    }
+    /**
+     * 获取前端发送的时间(噪音)
+     */
+    @RequestMapping(value =  "/getTime/noise",method = RequestMethod.POST)
+    public String getNoiseLevel(@RequestParam("noiseTime")String noiseTime){
+        return evDataMapper.findVoice(noiseTime);
     }
 
-    /**
-     * Obtain indoor noise in response to front-end acquisition request
-     * @return latest indoor noise data
-     */
-    @RequestMapping(value = "/getEVD/Noise",method = RequestMethod.GET)
-    public String voiceMapper(){
-        return evDataMapper.findVoice();
-    }
-    /**
-     * Obtain indoor brightness in response to front-end acquisition request
-     * @return latest indoor brightness data
-     */
-    @RequestMapping(value = "/getEVD/Brightness",method = RequestMethod.GET)
-    public String brightMapper(){
-        return evDataMapper.findBrightness();
-    }
 
-    /**
-     * Obtain indoor air quality in response to front-end acquisition request
-     * @return latest indoor air quality data
-     */
-    @RequestMapping(value = "/getEVD/HCHO",method = RequestMethod.GET)
-    public String hchoMapper(){
-        return evDataMapper.findHCHO();
-    }
 
 }
