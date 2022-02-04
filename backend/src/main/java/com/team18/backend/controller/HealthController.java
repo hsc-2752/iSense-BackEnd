@@ -45,11 +45,11 @@ public class HealthController {
     /**
      * 获取用户是否睡眠中途被噪音和光照吵醒
      */
-    //TODO
+    //TODO 待商议
     @RequestMapping(value = "/getHealthData/assignFlag",method = RequestMethod.POST)
     public void assignFlag(@RequestParam("isAwakenByNoisy") boolean isAwakenByNoisy){
-
     }
+
     /**
      * Obtain sleep time from service layer, and return it to the front end
      * @return sleep time 返回类型暂时是字符串，service完成改成睡眠数据对象
@@ -60,4 +60,31 @@ public class HealthController {
     public String sleepTime(){
         return "deep sleep:5;paradox sleep:2";
     }
+
+    /**
+     * 获取前端发送的时间(血氧)
+     */
+    @RequestMapping(value =  "/getTime/bos",method = RequestMethod.POST)
+    public String getBloodOxygen(@RequestParam("bosTime")String bosTime){
+        return healthMapper.findBOS(bosTime);
+    }
+    /**
+     * 获取前端发送的时间(心率)
+     */
+    @RequestMapping(value =  "/getTime/hr",method = RequestMethod.POST)
+    public String getHeartRate(@RequestParam("hrTime")String hrTime){
+        return healthMapper.findHR(hrTime);
+    }
+
+    /**
+     * 获取前端发送的时间(bmi)
+     */
+    @RequestMapping(value =  "/getTime/bmi",method = RequestMethod.POST)
+    public String getBMI(@RequestParam("bmiTime")String bmiTime){
+        return healthMapper.findBMI(bmiTime);
+    }
+
+
+
+
 }
