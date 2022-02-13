@@ -10,7 +10,8 @@ import java.util.List;
 @Mapper
 public interface EVDataMapper {
 
-    @Select("SELECT temp,humidity,pressure,voice,brightness,HCHO FROM ArduinoDB.NANO_data,ArduinoDB.MEGA_data order by NANO_data.NANOid desc limit 1;")
+    @Select("SELECT temp,humidity,pressure,voice,brightness,HCHO FROM ArduinoDB.NANO_data,ArduinoDB.MEGA_data" +
+            " order by NANO_data.NANOid desc limit 1;")
     List<EnvironmentData> findAll();
 
     /**
@@ -60,4 +61,13 @@ public interface EVDataMapper {
             " WHERE MEGAid < (SELECT MEGAid FROM arduinodb.mega_data WHERE TimeIndex = #{airTime})  " +
             "AND MEGAid >=(SELECT MEGAid FROM arduinodb.mega_data WHERE TimeIndex = #{airTime}) -1800;")
     String findHCHO(@Param("airTime")String airTime);
+
+    /**
+     * 获取三小时的环境数据
+     */
+    @Select("select temp, humidity, pressure,voice,brightness,HCHO " +
+            "from arduinodb.mega_data  join arduinodb.nano_data " +
+            "on mega_data.TimeIndex = nano_data.TimeIndex " +
+            "order by MEGAid desc limit 648,000")
+    List<EnvironmentData> reportData();
 }
