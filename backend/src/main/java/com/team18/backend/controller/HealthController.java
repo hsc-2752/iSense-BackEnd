@@ -1,11 +1,17 @@
 package com.team18.backend.controller;
 
 import com.team18.backend.mapper.HealthMapper;
-import com.team18.backend.pojo.HealthData;
+import com.team18.backend.pojo.HeartData;
+import com.team18.backend.pojo.HuData;
+import com.team18.backend.service.HuDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class HealthController {
@@ -18,7 +24,7 @@ public class HealthController {
      */
     @RequestMapping(value = "/getHealthData",method = RequestMethod.GET)
     @ResponseBody
-    public List<HealthData> bdMapper(){
+    public List<HeartData> bdMapper(){
         return healthMapper.findAll();
     }
 
@@ -27,19 +33,26 @@ public class HealthController {
      * Returns the data from the front end to the Service layer for assignment
      */
     //TODO improve method body and return value
-    @RequestMapping(value = "/getHealthData/assignBody",method = RequestMethod.POST)
-    public void assignBody(@RequestParam("weight") double weight,
-                         @RequestParam("height") double height){
+    @Autowired
+    private HuDataService huDataService;
 
+    @RequestMapping(value = "/getHealthData/assignBody",method = RequestMethod.POST)
+    public double assignBody(@RequestParam("weight") double weight,
+                         @RequestParam("height") double height){
+      double bmi =  huDataService.BMICalculator(height,weight);
+      Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String time = format.format(date);
+      healthMapper.storageBMI(bmi,time);
+      return bmi;
     }
     /**
      * Get the BMI results from the Service layer and return to the front end
      */
     //TODO improve method body and return value based on service class
     @RequestMapping(value = "/getHealthData/BMI",method = RequestMethod.GET)
-    public double bmiMapper(){
-        double temp = 1.0;
-        return temp;
+    public List<HuData> bmiMapper(){
+        return healthMapper.getBMI();
     }
 
     /**
@@ -76,18 +89,7 @@ public class HealthController {
         return healthMapper.findHR(hrTime);
     }
 
-    /**
-     * 获取前端发送的时间(bmi)
-     */
-    @RequestMapping(value =  "/getTime/bmi",method = RequestMethod.POST)
-    public String getBMI(@RequestParam("bmiTime")String bmiTime){
-        return healthMapper.findBMI(bmiTime);
-    }
 
-
-    /**
-     *
-     */
 
 
 }

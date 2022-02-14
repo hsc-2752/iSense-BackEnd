@@ -1,6 +1,7 @@
 package com.team18.backend.mapper;
 
 import com.team18.backend.pojo.EnvironmentData;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -8,7 +9,8 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 @Mapper
-public interface EVDataMapper {
+public interface
+EVDataMapper {
 
     @Select("SELECT temp,humidity,pressure,voice,brightness,HCHO FROM ArduinoDB.NANO_data,ArduinoDB.MEGA_data" +
             " order by NANO_data.NANOid desc limit 1;")
@@ -68,6 +70,8 @@ public interface EVDataMapper {
     @Select("select temp, humidity, pressure,voice,brightness,HCHO " +
             "from arduinodb.mega_data  join arduinodb.nano_data " +
             "on mega_data.TimeIndex = nano_data.TimeIndex " +
-            "order by MEGAid desc limit 648,000")
+            "order by MEGAid desc limit 50")
     List<EnvironmentData> reportData();
+
+
 }

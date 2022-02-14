@@ -1,6 +1,9 @@
 package com.team18.backend.mapper;
 
-import com.team18.backend.pojo.HealthData;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.team18.backend.pojo.HeartData;
+import com.team18.backend.pojo.HuData;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -8,11 +11,12 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 
+
 @Mapper
 public interface HealthMapper {
     //TODO: add SQL statement
     @Select("SELECT HeartRate, BOS from ArduinoDB.MEGA_data order by MEGAid limit 1;")
-    List<HealthData> findAll();
+    List<HeartData> findAll();
 
 
 
@@ -38,10 +42,16 @@ public interface HealthMapper {
             "AND MEGAid >=(SELECT MEGAid FROM arduinodb.mega_data WHERE TimeIndex = #{hrTime}) -900;")
     String findHR(@Param("hrTime") String hrTime);
 
-    /**
-     * 获取一天的bmi/bmi平均值,待补充
-     */
-    @Select("")
-    String findBMI(@Param("bmiTime") String bmiTime);
 
+    /**
+     * 存入bmi数据
+     */
+    @Insert("INSERT INTO arduinodb.bmi_data (bmi,timeIndex) VALUE (#{bmi},#{time})")
+    void storageBMI(@Param("bmi")double bmi,@Param("time")String time);
+
+    /**
+     * 取bmi数据
+     */
+    @Select("SELECT timeIndex, bmi FROM arduinodb.bmi_data")
+    List<HuData>  getBMI();
 }

@@ -1,9 +1,12 @@
 package com.team18.backend.pojo;
 
-
-public class HealthData {
+/**
+ * This class is used for
+ */
+public class HeartData {
     private double HeartRate;
     private double BOS;
+
 
     public double getHeartRate() {
         return HeartRate;
