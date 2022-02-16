@@ -75,7 +75,7 @@ public interface HealthMapper {
      * 存入睡眠时间
      */
     @Insert("INSERT INTO arduinodb.sleep_data (deepSleep, paraSleep, dateIndex) VALUE (#{deepSleep}, #{paraSleep},#{dateIndex})")
-    void storeSleep(@Param("deepSleep") double deepSleep, @Param("paraSleep") double paraSleep, @Param("dateIndex") Date dateIndex);
+    void storeSleep(@Param("deepSleep") double deepSleep, @Param("paraSleep") double paraSleep, @Param("dateIndex") String dateIndex);
 
     /**
      * 取出睡眠时间

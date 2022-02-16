@@ -1,21 +1,20 @@
 package com.team18.backend.pojo;
 
-import java.util.Date;
+import org.springframework.stereotype.Component;
 
+import java.util.Date;
+@Component
 public class SleepData {
 
-
-
     private Boolean isAwaken;
-    private Date startTime;
-    private Date endTime;
+    private String startTime;
+    private String endTime;
 
 
-    public SleepData(Date startTime, Date endTime, Boolean isAwaken) {
-
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
+//    public SleepData(String startTime, String endTime, Boolean isAwaken) {
+//        this.startTime = startTime;
+//        this.endTime = endTime;
+//    }
 
     public Boolean getAwaken() {
         return isAwaken;
@@ -24,52 +23,21 @@ public class SleepData {
     public void setAwaken(Boolean awaken) {
         isAwaken = awaken;
     }
-//
-//    public void setLight(Boolean light) {
-//        this.light = light;
-//    }
-//
-//    public void setNoise(Boolean noise) {
-//        this.noise = noise;
-//    }
-//
-//    public void setAirQuality(Boolean airQuality) {
-//        this.airQuality = airQuality;
-//    }
-//
-//    public void setTemperature(Boolean temperature) {
-//        this.temperature = temperature;
-//    }
-//
-//    public Boolean getLight() {
-//        return light;
-//    }
-//
-//    public Boolean getNoise() {
-//        return noise;
-//    }
-//
-//    public Boolean getAirQuality() {
-//        return airQuality;
-//    }
-//
-//    public Boolean getTemperature() {
-//        return temperature;
-//    }
 
-    public Date getStartTime() {
+
+    public String getStartTime() {
         return startTime;
     }
 
-    public Date getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 }

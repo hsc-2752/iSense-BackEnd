@@ -5,9 +5,11 @@ import com.team18.backend.pojo.HeartData;
 import com.team18.backend.pojo.HuData;
 import com.team18.backend.pojo.SleepData;
 import com.team18.backend.service.HuDataService;
+import com.team18.backend.service.SleepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +20,8 @@ public class HealthController {
     @Autowired
     HealthMapper healthMapper;
 
+    @Autowired
+    SleepData sleepData;
     /**
      * Obtain all HR and BOS data from database, return it to
      */
@@ -86,11 +90,14 @@ public class HealthController {
      * 获取睡眠时间
      */
     @RequestMapping(value = "/getTime/sleepTime",method = RequestMethod.POST)
-    public void getSleepTime(@RequestParam("startTime")Date startTime,
-                             @RequestParam("endTime")Date endTime,
-                             @RequestParam("isAwaken")boolean isAwaken){
-        SleepData sleepData = new SleepData(startTime, endTime, isAwaken);
-
+    public void getSleepTime(@RequestParam("startTime")String startTime,
+                             @RequestParam("endTime")String endTime,
+                             @RequestParam("isAwaken")boolean isAwaken) throws ParseException {
+        sleepData.setStartTime(startTime);
+        sleepData.setEndTime(endTime);
+        sleepData.setAwaken(isAwaken);
+        SleepService sleepService = new SleepService();
+        sleepService.calculateDeepTime();
     }
 
 
