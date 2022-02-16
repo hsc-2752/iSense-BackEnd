@@ -3,15 +3,19 @@ package com.team18.backend.service;
 import com.team18.backend.mapper.HealthMapper;
 import com.team18.backend.pojo.SleepData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
  * 计算深浅睡眠以及睡眠质量
  */
+
 public class SleepService {
     private Boolean light;
     private Boolean noise;
@@ -19,23 +23,24 @@ public class SleepService {
     private Boolean temperature;
 
 
-    @Autowired
+
     private SleepData sleepData;
-    @Autowired
-    HealthMapper healthMapper;
+
+    public SleepService(SleepData sleepData) {
+        this.sleepData = sleepData;
+    }
     /**
      * 计算深浅睡眠时间，得到当前时间,调用mapper存入数据库
      */
-    public void calculateDeepTime() throws ParseException {
+    public Map<String,Double> calculateDeepTime() throws ParseException {
 
         double paraPer = Math.random()*0.2+0.55;
         double deepPer = 1 - paraPer;
         double total = calTotalTime();
-
-        Date date = new Date();
-        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
-        healthMapper.storeSleep(deepPer*total,paraPer*total,dateFormat.format(date) );
-
+        Map<String,Double> sleep = new HashMap<>();
+        sleep.put("paraSleep",paraPer*total);
+        sleep.put("deepSleep",deepPer*total);
+   return sleep;
     }
 
     /**

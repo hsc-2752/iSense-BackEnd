@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class HealthController {
@@ -20,8 +21,7 @@ public class HealthController {
     @Autowired
     HealthMapper healthMapper;
 
-    @Autowired
-    SleepData sleepData;
+
     /**
      * Obtain all HR and BOS data from database, return it to
      */
@@ -44,8 +44,8 @@ public class HealthController {
                          @RequestParam("height") double height){
       double bmi =  huDataService.BMICalculator(height,weight);
       Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String time = format.format(date);
+      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+      String time = format.format(date);
       healthMapper.storeBMI(bmi,time);
       return bmi;
     }
@@ -93,11 +93,14 @@ public class HealthController {
     public void getSleepTime(@RequestParam("startTime")String startTime,
                              @RequestParam("endTime")String endTime,
                              @RequestParam("isAwaken")boolean isAwaken) throws ParseException {
-        sleepData.setStartTime(startTime);
-        sleepData.setEndTime(endTime);
-        sleepData.setAwaken(isAwaken);
-        SleepService sleepService = new SleepService();
-        sleepService.calculateDeepTime();
+       SleepData sleepData = new SleepData(startTime,endTime,isAwaken);
+
+        Date date = new Date();
+        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
+        SleepService sleepService = new SleepService(sleepData);
+        Map<String, Double> sleepMap = sleepService.calculateDeepTime();
+
+        healthMapper.storeSleep(sleepMap.get("paraSleep"),sleepMap.get("deepSleep"),dateFormat.format(date));
     }
 
 
