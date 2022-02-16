@@ -3,15 +3,14 @@ package com.team18.backend.controller;
 import com.team18.backend.mapper.HealthMapper;
 import com.team18.backend.pojo.HeartData;
 import com.team18.backend.pojo.HuData;
+import com.team18.backend.pojo.SleepData;
 import com.team18.backend.service.HuDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class HealthController {
@@ -43,7 +42,7 @@ public class HealthController {
       Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String time = format.format(date);
-      healthMapper.storageBMI(bmi,time);
+      healthMapper.storeBMI(bmi,time);
       return bmi;
     }
     /**
@@ -55,23 +54,17 @@ public class HealthController {
         return healthMapper.getBMI();
     }
 
-    /**
-     * 获取用户是否睡眠中途被噪音和光照吵醒
-     */
-    //TODO 待商议
-    @RequestMapping(value = "/getHealthData/assignFlag",method = RequestMethod.POST)
-    public void assignFlag(@RequestParam("isAwakenByNoisy") boolean isAwakenByNoisy){
-    }
+
 
     /**
      * Obtain sleep time from service layer, and return it to the front end
      * @return sleep time 返回类型暂时是字符串，service完成改成睡眠数据对象
      */
     //TODO change return type once service layer complete
-    @RequestMapping(value = "/getHealthData/Sleep",method = RequestMethod.GET)
-    @ResponseBody
-    public String sleepTime(){
-        return "deep sleep:5;paradox sleep:2";
+    @RequestMapping(value = "/getHealthData/Sleep",method = RequestMethod.POST)
+    public void sleepTime(@RequestParam("startTime")Date startTime,
+                            @RequestParam("endTime")Date endTime){
+
     }
 
     /**
@@ -89,7 +82,16 @@ public class HealthController {
         return healthMapper.findHR(hrTime);
     }
 
+    /**
+     * 获取睡眠时间
+     */
+    @RequestMapping(value = "/getTime/sleepTime",method = RequestMethod.POST)
+    public void getSleepTime(@RequestParam("startTime")Date startTime,
+                             @RequestParam("endTime")Date endTime,
+                             @RequestParam("isAwaken")boolean isAwaken){
+        SleepData sleepData = new SleepData(startTime, endTime, isAwaken);
 
+    }
 
 
 }
