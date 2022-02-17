@@ -74,9 +74,14 @@ public class HealthDataService {
         Date date = new Date(System.currentTimeMillis());
         String time = dateFormat.format(date);
         List<Double> list = new ArrayList<>();
+
         for (int i = 0; i < count; i++) {
+
             list.add(healthMapper.findHR(time)) ;
             time = timeCalculate(date);
+            System.out.println(date);
+            date = new Date(date.getTime()-(1000*5));
+
         }
         return list;
     }
@@ -87,7 +92,7 @@ public class HealthDataService {
      * @return
      */
     private String timeCalculate(Date date) {
-        date = new Date(date.getTime()-(1000*60*15));
+
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(date);
     }
