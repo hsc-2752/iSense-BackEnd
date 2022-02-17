@@ -1,7 +1,9 @@
 package com.team18.backend.pojo;
 
 
+import org.springframework.stereotype.Component;
 
+@Component
 public class SleepData {
 
     private Boolean isAwaken;
@@ -9,10 +11,10 @@ public class SleepData {
     private String endTime;
 
 
-    public SleepData(String startTime, String endTime, Boolean isAwaken) {
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
+//    public SleepData(String startTime, String endTime, Boolean isAwaken) {
+//        this.startTime = startTime;
+//        this.endTime = endTime;
+//    }
 
     public Boolean getAwaken() {
         return isAwaken;

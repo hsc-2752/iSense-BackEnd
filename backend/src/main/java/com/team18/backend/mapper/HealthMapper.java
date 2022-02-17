@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
@@ -17,13 +18,9 @@ import java.util.Map;
 public interface HealthMapper {
     //TODO: add SQL statement
     @Select("SELECT HeartRate, BOS from ArduinoDB.MEGA_data order by MEGAid desc limit 1;")
-    List<HeartData> findAll();
+    HeartData findAll();
 
 
-
-    //TODO add SQL statement
-    @Select("")
-    String findSleep();
 
     /**
      *获取十五分钟内的血氧平均值
@@ -32,7 +29,7 @@ public interface HealthMapper {
             " FROM arduinodb.mega_data" +
             " WHERE MEGAid < (SELECT MEGAid FROM arduinodb.mega_data WHERE TimeIndex = #{bosTime})  " +
             "AND MEGAid >=(SELECT MEGAid FROM arduinodb.mega_data WHERE TimeIndex = #{bosTime}) -900;")
-    String findBOS(@Param("bosTime") String bosTime);
+    double findBOS(@Param("bosTime") String bosTime);
 
     /**
      * 获取十五分钟内所有血氧值
@@ -49,10 +46,13 @@ public interface HealthMapper {
             " FROM arduinodb.mega_data" +
             " WHERE MEGAid < (SELECT MEGAid FROM arduinodb.mega_data WHERE TimeIndex = #{hrTime})  " +
             "AND MEGAid >=(SELECT MEGAid FROM arduinodb.mega_data WHERE TimeIndex = #{hrTime}) -900;")
-    String findHR(@Param("hrTime") String hrTime);
+    Double findHR(@Param("hrTime") String hrTime);
+
+
+
 
     /**
-     * 获取十五分钟内所有心率值
+     * 获取十五分钟内所有心率值,倒序
      */
     @Select(" SELECT HearRate+" +
             " FROM arduinodb.mega_data " +

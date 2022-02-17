@@ -1,106 +1,93 @@
 package com.team18.backend.controller;
 
-import com.team18.backend.mapper.HealthMapper;
 import com.team18.backend.pojo.HeartData;
 import com.team18.backend.pojo.HuData;
 import com.team18.backend.pojo.SleepData;
-import com.team18.backend.service.HuDataService;
+import com.team18.backend.service.HealthDataService;
 import com.team18.backend.service.SleepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class HealthController {
 
+
+    /**
+     * 注入service层
+     */
     @Autowired
-    HealthMapper healthMapper;
+    private HealthDataService healthDataService;
+
 
 
     /**
      * Obtain all HR and BOS data from database, return it to
      */
     @RequestMapping(value = "/getHealthData",method = RequestMethod.GET)
-    @ResponseBody
-    public List<HeartData> bdMapper(){
-        return healthMapper.findAll();
+    public HeartData bdMapper(){
+        return healthDataService.getNewestData();
     }
 
-
     /**
-     * Returns the data from the front end to the Service layer for assignment
+     * 计算获得bmi
+     * @param weight 前端传来的体重
+     * @param height 前端传来的身高
+     * @return 获得的bmi
      */
-    //TODO improve method body and return value
-    @Autowired
-    private HuDataService huDataService;
-
     @RequestMapping(value = "/getHealthData/assignBody",method = RequestMethod.POST)
     public double assignBody(@RequestParam("weight") double weight,
                          @RequestParam("height") double height){
-      double bmi =  huDataService.BMICalculator(height,weight);
-      Date date = new Date();
-      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-      String time = format.format(date);
-      healthMapper.storeBMI(bmi,time);
-      return bmi;
+     return healthDataService.getAndStoreBMI(weight,height);
     }
     /**
-     * Get the BMI results from the Service layer and return to the front end
+     * 获取所有bmi(数据类型为List，存放了bmi以及对应时间)
      */
-    //TODO improve method body and return value based on service class
     @RequestMapping(value = "/getHealthData/BMI",method = RequestMethod.GET)
     public List<HuData> bmiMapper(){
-        return healthMapper.getBMI();
+        return healthDataService.getAllBMI();
     }
 
 
-
     /**
-     * Obtain sleep time from service layer, and return it to the front end
-     * @return sleep time 返回类型暂时是字符串，service完成改成睡眠数据对象
-     */
-    //TODO change return type once service layer complete
-    @RequestMapping(value = "/getHealthData/Sleep",method = RequestMethod.POST)
-    public void sleepTime(@RequestParam("startTime")Date startTime,
-                            @RequestParam("endTime")Date endTime){
-
-    }
-
-    /**
-     * 获取前端发送的时间(血氧)
+     * 用于画图的数据获取，前端返回一个横坐标个数，
+     * 根据横坐标个数决定获取几个十五分钟的平均值。
+     * (血氧)
      */
     @RequestMapping(value =  "/getTime/bos",method = RequestMethod.POST)
-    public String getBloodOxygen(@RequestParam("bosTime")String bosTime){
-        return healthMapper.findBOS(bosTime);
+    public List<Double> getBloodOxygen(@RequestParam("count")int count){
+        return healthDataService.getManyAvgBOS(count);
     }
+
     /**
-     * 获取前端发送的时间(心率)
+     * 获取前端发送的时间(心率),以及获取个数
      */
     @RequestMapping(value =  "/getTime/hr",method = RequestMethod.POST)
-    public String getHeartRate(@RequestParam("hrTime")String hrTime){
-        return healthMapper.findHR(hrTime);
+    public List<Double> getHeartRate(@RequestParam("count")int count){
+        return healthDataService.getManyAvgHR(count);
     }
 
     /**
      * 获取睡眠时间
      */
+
+    @Autowired
+    private SleepData sleepData;
+    @Autowired
+    private SleepService sleepService;
+
     @RequestMapping(value = "/getTime/sleepTime",method = RequestMethod.POST)
     public void getSleepTime(@RequestParam("startTime")String startTime,
                              @RequestParam("endTime")String endTime,
                              @RequestParam("isAwaken")boolean isAwaken) throws ParseException {
-       SleepData sleepData = new SleepData(startTime,endTime,isAwaken);
+        sleepData.setEndTime(endTime);
+        sleepData.setStartTime(startTime);
+        sleepData.setAwaken(isAwaken);
 
-        Date date = new Date();
-        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
-        SleepService sleepService = new SleepService(sleepData);
-        Map<String, Double> sleepMap = sleepService.calculateDeepTime();
-
-        healthMapper.storeSleep(sleepMap.get("paraSleep"),sleepMap.get("deepSleep"),dateFormat.format(date));
+        sleepService.calculateDeepTime();
     }
 
 

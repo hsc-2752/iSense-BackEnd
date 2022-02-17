@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-
+/**
+ *
+ */
 @RestController
-public class EVReportController {
+public class ReportComtroller {
 
     /**
      * Obtain overall report from service layer, return it to the front end
@@ -18,10 +20,16 @@ public class EVReportController {
     @Autowired
     EVDataMapper evDataMapper;
     @RequestMapping(value = "/getEVReport",method = RequestMethod.GET)
-    public String overallReport(){
+    public String environmentReport(){
         EnvReportService reportService = new EnvReportService(evDataMapper.reportData());
         return reportService.getReport();
     }
 
-
+    /**
+     * Obtain health overall report from service layer, return it to the front end
+     */
+    @RequestMapping(value = "/getHealReport",method = RequestMethod.GET)
+    public String healthReport(){
+        return"Health overall report";
+    }
 }

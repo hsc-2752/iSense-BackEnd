@@ -5,16 +5,18 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Mapper
+@Repository
 public interface
 EVDataMapper {
 
     @Select("SELECT temp,humidity,pressure,voice,brightness,HCHO FROM ArduinoDB.NANO_data,ArduinoDB.MEGA_data" +
             " order by NANO_data.NANOid desc limit 1;")
-    List<EnvironmentData> findAll();
+    EnvironmentData findAll();
 
     /**
      *获取一小时内的温度平均值
@@ -73,5 +75,7 @@ EVDataMapper {
             "order by MEGAid desc limit 50")
     List<EnvironmentData> reportData();
 
-
+    //TODO 试一下
+    @Select("select temp, voice, brightness, HCHO from aeduinodb.mega_data where TimeIndex between #{startTime} and #{endTime}")
+    List<EnvironmentData> sleepEVData(String st, String et);
 }
