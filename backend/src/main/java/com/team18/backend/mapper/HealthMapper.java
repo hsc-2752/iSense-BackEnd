@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -28,24 +29,24 @@ public interface HealthMapper {
     @Select("SELECT AVG(BOS)" +
             " FROM arduinodb.mega_data" +
             " WHERE MEGAid < (SELECT MEGAid FROM arduinodb.mega_data WHERE TimeIndex = #{bosTime})  " +
-            "AND MEGAid >=(SELECT MEGAid FROM arduinodb.mega_data WHERE TimeIndex = #{bosTime}) -900;")
-    double findBOS(@Param("bosTime") String bosTime);
+            "AND MEGAid >=(SELECT MEGAid FROM arduinodb.mega_data WHERE TimeIndex = #{bosTime}) -5;")
+    Double findBOS(@Param("bosTime") String bosTime);
 
     /**
      * 获取十五分钟内所有血氧值
      */
     @Select(" SELECT BOS+" +
             " FROM arduinodb.mega_data " +
-            " ORDER BY MEGAid DESC LIMT 900")
+            " ORDER BY MEGAid DESC LIMT 900;")
     List<String> findReportBOS();
 
     /**
      *获取十五分钟内的心率平均值
      */
-    @Select("SELECT AVG(HeartRate)" +
+    @Select(" SELECT AVG(HeartRate)" +
             " FROM arduinodb.mega_data" +
             " WHERE MEGAid < (SELECT MEGAid FROM arduinodb.mega_data WHERE TimeIndex = #{hrTime})  " +
-            "AND MEGAid >=(SELECT MEGAid FROM arduinodb.mega_data WHERE TimeIndex = #{hrTime}) -900;")
+            " AND MEGAid >=(SELECT MEGAid FROM arduinodb.mega_data WHERE TimeIndex = #{hrTime}) -900;")
     Double findHR(@Param("hrTime") String hrTime);
 
 
@@ -80,7 +81,6 @@ public interface HealthMapper {
     /**
      * 取出睡眠时间
      */
-    //TODO 和前端讨论作图的横坐标
-    //@Select("SELECT deepSleep, paraSleep from arduinodb.sleep_data ")
+
 
 }

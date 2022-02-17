@@ -53,14 +53,17 @@ public class HealthDataService {
      * (血氧)
      */
     public List<Double> getManyAvgBOS(int count){
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date(System.currentTimeMillis());
-        String time = dateFormat.format(date);
         List<Double> list = new ArrayList<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long timeMill = System.currentTimeMillis();
+        String time = dateFormat.format(timeMill);
+
         for (int i = 0; i < count; i++) {
-           list.add(healthMapper.findBOS(time)) ;
-           time = timeCalculate(date);
+
+            list.add(healthMapper.findBOS(time));
+
+            timeMill = timeMill - 1000*5;
+            time = dateFormat.format(timeMill);
         }
         return list;
     }
@@ -71,31 +74,24 @@ public class HealthDataService {
      */
     public List<Double> getManyAvgHR(int count){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date(System.currentTimeMillis());
-        String time = dateFormat.format(date);
+
+       long timeMill = System.currentTimeMillis();
         List<Double> list = new ArrayList<>();
+        String time = dateFormat.format(timeMill);
 
         for (int i = 0; i < count; i++) {
 
-            list.add(healthMapper.findHR(time)) ;
-            time = timeCalculate(date);
-            System.out.println(date);
-            date = new Date(date.getTime()-(1000*5));
+
+            list.add(healthMapper.findHR(time));
+
+            timeMill -= 1000*5;
+           time = dateFormat.format(timeMill);
 
         }
         return list;
     }
 
-    /**
-     * 将时间减少15分钟
-     * @param date
-     * @return
-     */
-    private String timeCalculate(Date date) {
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return format.format(date);
-    }
 
 
 }

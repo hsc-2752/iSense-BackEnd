@@ -69,6 +69,7 @@ EVDataMapper {
     /**
      * 获取三小时的环境数据
      */
+    //TODO 正式测试时 记得将50改为60*60*3
     @Select("select temp, humidity, pressure,voice,brightness,HCHO " +
             "from arduinodb.mega_data  join arduinodb.nano_data " +
             "on mega_data.TimeIndex = nano_data.TimeIndex " +
@@ -76,6 +77,16 @@ EVDataMapper {
     List<EnvironmentData> reportData();
 
     //TODO 试一下
-    @Select("select temp, voice, brightness, HCHO from aeduinodb.mega_data where TimeIndex between #{startTime} and #{endTime}")
-    List<EnvironmentData> sleepEVData(String st, String et);
+
+    /**
+     *用于取出分析睡眠时周围的环境数据
+     * @param
+     * @param
+     * @return
+     */
+    @Select("SELECT temp, humidity, voice, brightness,HCHO" +
+            " FROM arduinodb.mega_data join arduinodb.nano_data " +
+            "on mega_data.TimeIndex = nano_data.TimeIndex " +
+            "where arduinodb.nano_data.TimeIndex between #{startTime} and #{endTime}")
+    List<EnvironmentData> sleepEVData(String startTime, String endTime);
 }

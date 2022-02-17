@@ -1,8 +1,12 @@
 package com.team18.backend.controller;
 
+import com.team18.backend.mapper.EVDataMapper;
+import com.team18.backend.mapper.HealthMapper;
+import com.team18.backend.pojo.EnvironmentData;
 import com.team18.backend.pojo.HeartData;
 import com.team18.backend.pojo.HuData;
 import com.team18.backend.pojo.SleepData;
+import com.team18.backend.service.EVDataService;
 import com.team18.backend.service.HealthDataService;
 import com.team18.backend.service.SleepService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +61,7 @@ public class HealthController {
      * (血氧)
      */
     @RequestMapping(value =  "/getTime/bos",method = RequestMethod.POST)
-    public List<Double> getBloodOxygen(@RequestParam("count")int count){
+    public List<Double> getBloodOxygen(@RequestParam("count")int count) {
         return healthDataService.getManyAvgBOS(count);
     }
 
@@ -89,5 +93,15 @@ public class HealthController {
         sleepService.calculateDeepTime();
     }
 
+
+
+//    //仅用于测试
+//    @Autowired
+//    EVDataMapper evDataMapper;
+//    @RequestMapping(value = "/test",method = RequestMethod.POST)
+//    public List<EnvironmentData> test(@RequestParam("startTime") String startTime,
+//                                      @RequestParam("endTime")String endTime){
+//        return evDataMapper.sleepEVData(startTime,endTime);
+//    }
 
 }
