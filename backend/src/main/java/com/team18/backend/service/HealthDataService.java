@@ -6,7 +6,6 @@ import com.team18.backend.pojo.HuData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,7 +70,9 @@ public class HealthDataService {
      * 用于画图的数据获取，前端返回一个横坐标个数，
      * 根据横坐标个数决定获取几个十五分钟的平均值。
      * (心率)
+     *
      */
+    //TODO 开发测试为每五秒的平均值，正式测试改为15分钟的平均值
     public List<Double> getManyAvgHR(int count){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -80,8 +81,6 @@ public class HealthDataService {
         String time = dateFormat.format(timeMill);
 
         for (int i = 0; i < count; i++) {
-
-
             list.add(healthMapper.findHR(time));
 
             timeMill -= 1000*5;

@@ -1,12 +1,8 @@
 package com.team18.backend.service;
 
 import com.team18.backend.mapper.EVDataMapper;
-import com.team18.backend.mapper.HealthMapper;
-import com.team18.backend.pojo.EnvironmentData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 
 /**

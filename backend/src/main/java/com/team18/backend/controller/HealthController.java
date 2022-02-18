@@ -1,12 +1,8 @@
 package com.team18.backend.controller;
 
-import com.team18.backend.mapper.EVDataMapper;
-import com.team18.backend.mapper.HealthMapper;
-import com.team18.backend.pojo.EnvironmentData;
 import com.team18.backend.pojo.HeartData;
 import com.team18.backend.pojo.HuData;
 import com.team18.backend.pojo.SleepData;
-import com.team18.backend.service.EVDataService;
 import com.team18.backend.service.HealthDataService;
 import com.team18.backend.service.SleepService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class HealthController {
@@ -48,8 +45,9 @@ public class HealthController {
     }
     /**
      * 获取所有bmi(数据类型为List，存放了bmi以及对应时间)
+     * 用于画图
      */
-    @RequestMapping(value = "/getHealthData/BMI",method = RequestMethod.GET)
+    @RequestMapping(value = "/getTime/BMI",method = RequestMethod.GET)
     public List<HuData> bmiMapper(){
         return healthDataService.getAllBMI();
     }
@@ -73,35 +71,22 @@ public class HealthController {
         return healthDataService.getManyAvgHR(count);
     }
 
-    /**
-     * 获取睡眠时间
-     */
 
     @Autowired
     private SleepData sleepData;
+
     @Autowired
     private SleepService sleepService;
-
+    /**
+     * 获取睡眠时间,将深浅睡眠计算出来并存入数据库
+     */
     @RequestMapping(value = "/getTime/sleepTime",method = RequestMethod.POST)
-    public void getSleepTime(@RequestParam("startTime")String startTime,
-                             @RequestParam("endTime")String endTime,
-                             @RequestParam("isAwaken")boolean isAwaken) throws ParseException {
+    public Map<String,Double> getSleepTime(@RequestParam("startTime")String startTime,
+                                           @RequestParam("endTime")String endTime) throws ParseException {
         sleepData.setEndTime(endTime);
         sleepData.setStartTime(startTime);
-        sleepData.setAwaken(isAwaken);
+       return sleepService.calculateTwoKindsSleepTime();
 
-        sleepService.calculateDeepTime();
     }
-
-
-
-//    //仅用于测试
-//    @Autowired
-//    EVDataMapper evDataMapper;
-//    @RequestMapping(value = "/test",method = RequestMethod.POST)
-//    public List<EnvironmentData> test(@RequestParam("startTime") String startTime,
-//                                      @RequestParam("endTime")String endTime){
-//        return evDataMapper.sleepEVData(startTime,endTime);
-//    }
 
 }

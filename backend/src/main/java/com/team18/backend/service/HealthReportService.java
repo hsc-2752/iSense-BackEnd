@@ -1,110 +1,148 @@
 package com.team18.backend.service;
 
+import com.team18.backend.mapper.HealthMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Service
+@Transactional
 public class HealthReportService {
+    @Autowired
+    private HealthMapper healthMapper;
+
+    /**
+     * 十五分钟内的心率
+     */
     private List<String> heartRateList;
+    /**
+     * 十五分钟内的血氧
+     */
     private List<String> bloodOxygenList;
+
+    @Autowired
+    private SleepService sleepService;
+
+    private boolean isAwaken;
     private String sleep;
     private String report;
 
-    public HealthReportService(List<String> heartRateList,List<String> bloodOxygenList,String sleep){
-        this.heartRateList = heartRateList;
-        this.bloodOxygenList = bloodOxygenList;
-        this.sleep = sleep;
-        report = "";
+
+
+
+    public String getReport(boolean isAwaken){
+        //初始化
+        this.heartRateList = healthMapper.findReportHR();
+        this.bloodOxygenList = healthMapper.findReportBOS();
+        this.sleep = sleepService.evaluate();
+        this.isAwaken = isAwaken;
+         report = "";
+        report = report + generateOverall();
+        report = report + findAbnormal();
+        sleepReport();
+        report = report +"All other conditions are very good!";
+        return report;
     }
 
     private int loopList(){
         int score = 1000;
-        for (int i = 0; i < heartRateList.size();i++) {
-            score = score - Math.abs(heartRateCondition(Double.valueOf(heartRateList.get(i))));
+        for (String s : heartRateList) {
+            score = score - Math.abs(heartRateCondition(Double.valueOf(s)));
         }
-        for (int i = 0; i < bloodOxygenList.size();i++) {
-            score = score - Math.abs(bosCondition(Double.valueOf(bloodOxygenList.get(i))));
+        for (String s : bloodOxygenList) {
+            score = score - Math.abs(bosCondition(Double.valueOf(s)));
         }
         score = score - (int) sleep.charAt(0);
         return score/10;
     }
 
+    /**
+     * 生成睡眠报告
+     */
     private void sleepReport(){
         // brightness, noise, air quality, temperature
-        if(sleep.charAt(0)=='0'){
+        if(!isAwaken){
             report = report + "You had a really good sleep! Congratulations!";
         }
-        switch(sleep){
-            case "11000" : //
-                report = report + "According to our environment record, you might have been waken up due to the overly bright environment brightness, you should check the brightness before sleep";
-                break;
-            case "10100" :
-                report = report + "According to our environment record, you might have been waken up due to the overly high noise, as the research suggests, the suitable sound volume for good sleep quality" +
-                        "should be less 50 dB，soundproofing materials might be helpful for you!";
-                break;
-            case "10010" :
-                report = report + "According to our environment record, you might have been waken up due to not very good air quality, please ensure some time for ventilation before sleep";
-                break;
-            case "10001" :
-                report = report + "According to our environment record, you might have been waken up due to unsuitable temperature inside room, as the research suggests, the best temperature for sleep " +
-                        "is 20 degree Celsius，open or close the window, turn on or off the air conditioner can all help you adjust the indoor temperature!";
-                break;
-            case "11100" :
-                report = report + "According to our environment record, you might have been waken up due to overly bright environment brightness and high noise，you should check the brightness before sleep and" +
-                        "soundproofing materials might be helpful for you!";
-                break;
-            case "11010" :
-                report = report + "According to our environment record, you might have been waken up due to overly bright environment brightness and not very good air quality，you should check the brightness before sleep and" +
-                        "ensure some time for ventilation before sleep";
-                break;
-            case "11001" :
-                report = report + "According to our environment record, you might have been waken up due to overly bright environment brightness and unsuitable temperature，you should check the brightness before sleep and" +
-                        "as the research suggests, the best temperature for sleep is 20 degree Celsius，open or close the window, turn on or off the air conditioner can all help you adjust the indoor temperature!";
-                break;
-            case "10110" :
-                report = report + "According to our environment record, you might have been waken up due to overly high noise and not very good air quality." + "as the research suggests, the suitable sound volume for good sleep quality" +
-                "should be less 50 dB，soundproofing materials might be helpful for you! Also, don't forget to ensure some time for ventilation before sleep!";
-                break;
-            case "10101" : //
-                report = report + "According to our environment record, you might have been waken up due to overly high noise and unsuitable temperature，using some soundproofing materials might be helpful for you" +
-                        "Also, as the research suggests, the best temperature for sleep is 20 degree Celsius，open or close the window, turn on or off the air conditioner can all help you adjust the indoor temperature!";
-                break;
-            case "10011" :
-                report = report + "According to our environment record, you might have been waken up due to not very good air quality and unsuitable temperature. As the research suggests, the best temperature for sleep is 20 degree Celsius，" +
-                        "open or close the window, turn on or off the air conditioner can all help you adjust the indoor temperature, also, don't forget to" +
-                        "ensure some time for ventilation before sleep";
-                break;
-            case "11110" :
-                report = report + "According to our environment record, you might have been waken up due to the mixed effect of overly bright environment brightness, high noise and not very good air quality, these are all elements that would greatly affect" +
-                        "your sleep quality. Some time for ventilation before sleep, using soundproofing materials and eye patches would help!" ;
-                break;
-            case "11011" :
-                report = report + "According to our environment record, you might have been waken up due to the mixed effect of overly bright environment brightness, high temperature and not very good air quality, these are all elements that would greatly affect" +
-                        "your sleep quality. Some time for ventilation, and using eye patches would be useful."+"Also, as the research suggests, the best temperature for sleep is 20 degree Celsius，open or close the window, turn on or off the air conditioner can all help you adjust the indoor temperature!";
-                break;
-            case "10111" :
-                report = report + "According to our environment record, you might have been waken up due to the mixed effect of overly high temperature and noise and not very good air quality, these are all elements that would greatly affect" +
-                        "your sleep quality. Some time for ventilation, and using soundproofing materials would be useful."+"Also, as the research suggests, the best temperature for sleep is 20 degree Celsius，open or close the window, turn on or off the air conditioner can all help you adjust the indoor temperature!";
-                break;
-            case "11111" :
-                report = report + "According to our environment record, you might have been waken up due to the mixed effect of overly high temperature and brightness, noise and not very good air quality, these are all elements that would greatly affect" +
-                        "your sleep quality. Some time for ventilation, and using soundproofing materials and eye patches would be useful."+"Also, as the research suggests, the best temperature for sleep is 20 degree Celsius，open or close the window, turn on or off the air conditioner can all help you adjust the indoor temperature!";
-                break;
-            case "11101" :
-                report = report + "According to our environment record, you might have been waken up due to the mixed effect of overly high temperature and brightness, noise and not very good air quality, these are all elements that would greatly affect" +
-                        "your sleep quality. Using soundproofing materials and eye patches would be useful."+"Also, as the research suggests, the best temperature for sleep is 20 degree Celsius，open or close the window, turn on or off the air conditioner can all help you adjust the indoor temperature!";
-                break;
-            case "10000" :
-                report = report + "There's a lot of reasons that one might woke up suddenly. Stress is one of them. If that's the case for you, maybe try do some exercise or listen to some music before sleep. However, if you wake up suddenly for several days in a row, please seek medical attention!";
-                break;
-            default:
-                System.out.println("not a valid sleep condition");
+        else {
+            switch(sleep){
+                case "1000" :
+                    report = report + "According to our environment record, you might have been waken up due to the overly bright environment brightness, you should check the brightness before sleep";
+                    break;
+                case "0100" :
+                    report = report + "According to our environment record, you might have been waken up due to the overly high noise, as the research suggests, the suitable sound volume for good sleep quality" +
+                            "should be less 50 dB，soundproofing materials might be helpful for you!";
+                    break;
+                case "0010" :
+                    report = report + "According to our environment record, you might have been waken up due to not very good air quality, please ensure some time for ventilation before sleep";
+                    break;
+                case "0001" :
+                    report = report + "According to our environment record, you might have been waken up due to unsuitable temperature inside room, as the research suggests, the best temperature for sleep " +
+                            "is 20 degree Celsius，open or close the window, turn on or off the air conditioner can all help you adjust the indoor temperature!";
+                    break;
+                case "1100" :
+                    report = report + "According to our environment record, you might have been waken up due to overly bright environment brightness and high noise，you should check the brightness before sleep and" +
+                            "soundproofing materials might be helpful for you!";
+                    break;
+                case "1010" :
+                    report = report + "According to our environment record, you might have been waken up due to overly bright environment brightness and not very good air quality，you should check the brightness before sleep and" +
+                            "ensure some time for ventilation before sleep";
+                    break;
+                case "1001" :
+                    report = report + "According to our environment record, you might have been waken up due to overly bright environment brightness and unsuitable temperature，you should check the brightness before sleep and" +
+                            "as the research suggests, the best temperature for sleep is 20 degree Celsius，open or close the window, turn on or off the air conditioner can all help you adjust the indoor temperature!";
+                    break;
+                case "0110" :
+                    report = report + "According to our environment record, you might have been waken up due to overly high noise and not very good air quality." + "as the research suggests, the suitable sound volume for good sleep quality" +
+                            "should be less 50 dB，soundproofing materials might be helpful for you! Also, don't forget to ensure some time for ventilation before sleep!";
+                    break;
+                case "0101" :
+                    report = report + "According to our environment record, you might have been waken up due to overly high noise and unsuitable temperature，using some soundproofing materials might be helpful for you" +
+                            "Also, as the research suggests, the best temperature for sleep is 20 degree Celsius，open or close the window, turn on or off the air conditioner can all help you adjust the indoor temperature!";
+                    break;
+                case "0011" :
+                    report = report + "According to our environment record, you might have been waken up due to not very good air quality and unsuitable temperature. As the research suggests, the best temperature for sleep is 20 degree Celsius，" +
+                            "open or close the window, turn on or off the air conditioner can all help you adjust the indoor temperature, also, don't forget to" +
+                            "ensure some time for ventilation before sleep";
+                    break;
+                case "1110" :
+                    report = report + "According to our environment record, you might have been waken up due to the mixed effect of overly bright environment brightness, high noise and not very good air quality, these are all elements that would greatly affect" +
+                            "your sleep quality. Some time for ventilation before sleep, using soundproofing materials and eye patches would help!" ;
+                    break;
+                case "1011" :
+                    report = report + "According to our environment record, you might have been waken up due to the mixed effect of overly bright environment brightness, high temperature and not very good air quality, these are all elements that would greatly affect" +
+                            "your sleep quality. Some time for ventilation, and using eye patches would be useful."+"Also, as the research suggests, the best temperature for sleep is 20 degree Celsius，open or close the window, turn on or off the air conditioner can all help you adjust the indoor temperature!";
+                    break;
+                case "0111" :
+                    report = report + "According to our environment record, you might have been waken up due to the mixed effect of overly high temperature and noise and not very good air quality, these are all elements that would greatly affect" +
+                            "your sleep quality. Some time for ventilation, and using soundproofing materials would be useful."+"Also, as the research suggests, the best temperature for sleep is 20 degree Celsius，open or close the window, turn on or off the air conditioner can all help you adjust the indoor temperature!";
+                    break;
+                case "1111" :
+                    report = report + "According to our environment record, you might have been waken up due to the mixed effect of overly high temperature and brightness, noise and not very good air quality, these are all elements that would greatly affect" +
+                            "your sleep quality. Some time for ventilation, and using soundproofing materials and eye patches would be useful."+"Also, as the research suggests, the best temperature for sleep is 20 degree Celsius，open or close the window, turn on or off the air conditioner can all help you adjust the indoor temperature!";
+                    break;
+                case "1101" :
+                    report = report + "According to our environment record, you might have been waken up due to the mixed effect of overly high temperature and brightness, noise and not very good air quality, these are all elements that would greatly affect" +
+                            "your sleep quality. Using soundproofing materials and eye patches would be useful."+"Also, as the research suggests, the best temperature for sleep is 20 degree Celsius，open or close the window, turn on or off the air conditioner can all help you adjust the indoor temperature!";
+                    break;
+                case "0000" :
+                    report = report + "There's a lot of reasons that one might woke up suddenly. Stress is one of them. If that's the case for you, maybe try do some exercise or listen to some music before sleep. However, if you wake up suddenly for several days in a row, please seek medical attention!";
+                    break;
+                default:
+                    System.out.println("not a valid sleep condition");
+            }
         }
+
     }
 
 
     private int heartRateCondition(Double hr){
-        int condition = -5; //-5 is used in case the if statements are skipped
+        //-5 is used in case the if statements are skipped
+        int condition = -5;
+
         if (hr <= 60){
             condition = -2;
         }
@@ -169,25 +207,25 @@ public class HealthReportService {
         double tempMin = 10000;
 
         for(int i = 0; i < heartRateList.size();i++){
-            if (Integer.parseInt(heartRateList.get(i))>100){
+            if (Double.parseDouble(heartRateList.get(i))>100.0){
                 temp_2.add(i);
-                if (Integer.parseInt(heartRateList.get(i))>tempMax){
-                    tempMax = Integer.parseInt(heartRateList.get(i));
+                if (Double.parseDouble(heartRateList.get(i))>tempMax){
+                    tempMax = Double.parseDouble(heartRateList.get(i));
                 }
             }
-            if (Integer.parseInt(heartRateList.get(i))<= 60){
+            if (Double.parseDouble(heartRateList.get(i))<= 60.0){
                 temp_n2.add(i);
-                if (Integer.parseInt(heartRateList.get(i))<tempMin){
-                    tempMin = Integer.parseInt(heartRateList.get(i));
+                if (Double.parseDouble(heartRateList.get(i))<tempMin){
+                    tempMin = Double.parseDouble(heartRateList.get(i));
                 }
             }
-            if (Integer.parseInt(heartRateList.get(i)) >60 && Integer.parseInt(heartRateList.get(i)) <= 70){
+            if (Double.parseDouble(heartRateList.get(i)) >60.0 && Double.parseDouble(heartRateList.get(i)) <= 70.0){
                 temp_n1.add(i);
             }
 //            if (list.get(i).getTemp() > 18 && list.get(i).getTemp() <= 25){
 //                temp_0.add(i);
 //            }
-            if (Integer.parseInt(heartRateList.get(i)) > 90 && Integer.parseInt(heartRateList.get(i))<= 100){
+            if (Double.parseDouble(heartRateList.get(i)) > 90.0 && Double.parseDouble(heartRateList.get(i))<= 100.0){
                 temp_1.add(i);
             }
         }
@@ -212,11 +250,5 @@ public class HealthReportService {
         return abnormal;
     }
 
-    public String getReport(){
-        String report = "";
-        report = report + generateOverall();
-        report = report + findAbnormal();
-        report = report +"All other conditions are very good!";
-        return report;
-    }
+
 }
