@@ -1,15 +1,13 @@
 package com.team18.backend.mapper;
 
 import com.team18.backend.pojo.EnvironmentData;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Mapper
+
 @Repository
 public interface
 EVDataMapper {

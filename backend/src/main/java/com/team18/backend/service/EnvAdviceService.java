@@ -1,9 +1,10 @@
 package com.team18.backend.service;
 
+import com.team18.backend.mapper.EVAdviceMapper;
 import com.team18.backend.mapper.EVDataMapper;
+import com.team18.backend.pojo.EnvironmentData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 /**
  *
@@ -12,17 +13,76 @@ import org.springframework.stereotype.Service;
 public class EnvAdviceService {
 
     @Autowired
-    private EVDataMapper evDataMapper;
+    private EVAdviceMapper adviceMapper;
 
-
-
-
+    /**
+     * 获取温度和湿度的建议
+     * @return
+     */
     public String getTemAndHumAdvice(){
-        //TODO 将mapper返回类型改为 EnvironmentData 而不是List
-        //EnvironmentData environmentData = evDataMapper.findAll();
-        return "";
-        //return temAndHumCalculate(environmentData.getTemp(),environmentData.getHumidity());
+       double temp = adviceMapper.getTempAdviceData();
+       double humidity = adviceMapper.getHumAdviceData();
+        return temAndHumCalculate(temp,humidity);
     }
+
+    /**
+     * 获取气压的建议
+     */
+    public String getPressureAdvice(){
+    double pressure = adviceMapper.getPressureAdviceData();
+    return "developing";
+    }
+
+    /**
+     * 获取噪音的有关建议
+     */
+    public String getNoiseAdvice(){
+       double noise = adviceMapper.getNoiseAdviceData();
+        return noiseCalculate(noise);
+    }
+
+    /**
+     * 获取空气质量的有关建议
+     */
+    public String getAirQualityAdvice(){
+        double air = adviceMapper.getAirAdviceData();
+        return "developing";
+    }
+    /**
+     * 获取光照有关建议
+     */
+    public String getBrightAdvice(){
+        double bright = adviceMapper.getBrightAdviceData();
+        return "developing";
+    }
+
+    /**
+     * 分析环境音量
+     * @param noise
+     * @return 建议
+     */
+    private String noiseCalculate(double noise) {
+        if(noise >=0 && noise <=15 )
+        {
+            return "The surroundings are now quiet enough for activities that require intense concentration. But I suggest you take it easy.";
+        }
+        else if(noise >15 && noise <=50)
+        {
+            return "The surrounding seems so right and the ambient decibel value is very normal, suitable for daily life, some relaxed activities.";
+        }
+        else if(noise >50 && noise<=100 )
+        {
+            return "You are in bear garden, if you turn on the sound caused by the high decibel environment, " +
+                    "it is recommended that you do not stay in this environment for a long time; If the noise is caused by outdoor noise," +
+                    " you are advised to wear ear muffs or report the situation to the relevant authorities.";
+        }
+        else {
+            return "Your surroundings are too vociferous, noise can damage people's hearing ability," +
+                    " people's visual system and even affect other parts of the body. I suggest you get away from this noisy environment.";
+        }
+
+    }
+
 
     /**
      * 分析湿度
@@ -48,7 +108,6 @@ public class EnvAdviceService {
     /**
      * 分析温度和湿度，返回建议的字符串
      */
-
     private String temAndHumCalculate(double temp, double humidity ){
         //too cold
         if(temp <=11 ){

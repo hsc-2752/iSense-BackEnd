@@ -15,15 +15,12 @@ public class EVDataService {
     @Autowired
     private EVDataMapper evDataMapper;
 
-
-
     /**
      * 用于画图的数据获取，前端返回一个横坐标个数，
      * 根据横坐标个数决定获取几个十五分钟的平均值。
      * (温度)
      *
      */
-
     public List<Double> getManyAvgTemp(int count) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -117,13 +114,6 @@ public class EVDataService {
             time = dateFormat.format(timeMill);
         }
         return list;
-    }
-
-    /**
-     * 获取三小时的环境数据
-     */
-    public List<EnvironmentData> threeHourEVdata() {
-        return evDataMapper.reportData();
     }
 
     /**

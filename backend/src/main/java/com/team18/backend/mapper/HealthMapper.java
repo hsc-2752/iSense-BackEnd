@@ -3,11 +3,12 @@ package com.team18.backend.mapper;
 import com.team18.backend.pojo.HeartData;
 import com.team18.backend.pojo.HuData;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 
-@Mapper
+@Repository
 public interface HealthMapper {
     /**
      * 选择最新一条心跳血氧数据
