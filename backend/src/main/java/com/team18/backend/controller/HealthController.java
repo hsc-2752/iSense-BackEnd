@@ -1,5 +1,6 @@
 package com.team18.backend.controller;
 
+import com.team18.backend.pojo.CalculatedSleepData;
 import com.team18.backend.pojo.HeartData;
 import com.team18.backend.pojo.HuData;
 import com.team18.backend.pojo.SleepData;
@@ -21,8 +22,6 @@ public class HealthController {
      */
     @Autowired
     private HealthDataService healthDataService;
-
-
 
     /**
      * Obtain all HR and BOS data from database, return it to
@@ -52,7 +51,6 @@ public class HealthController {
         return healthDataService.getAllBMI();
     }
 
-
     /**
      * 用于画图的数据获取，前端返回一个横坐标个数，
      * 根据横坐标个数决定获取几个十五分钟的平均值。
@@ -64,11 +62,21 @@ public class HealthController {
     }
 
     /**
-     * 获取前端发送的时间(心率),以及获取个数
+     * (心率),以及获取个数
      */
     @RequestMapping(value =  "/getTime/hr",method = RequestMethod.POST)
     public List<Double> getHeartRate(@RequestParam("count")int count){
         return healthDataService.getManyAvgHR(count);
+    }
+
+    /**
+     * 用于画图的数据获取，前端返回一个横坐标个数，
+     * 根据横坐标个数决定获取几个十五分钟的平均值。
+     * (睡眠时间)
+     */
+    @RequestMapping(value = "/getTime/sleep", method = RequestMethod.POST)
+    public List<CalculatedSleepData> getSleep(@RequestParam("count")int count){
+        return healthDataService.getManySleep(count);
     }
 
 

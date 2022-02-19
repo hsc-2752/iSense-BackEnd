@@ -34,7 +34,6 @@ public class OverallReportService {
     }
 
     private String getEEGReport() {
-     //   tempList = healthMapper.findReportHR();
         return "implementing..";
     }
 

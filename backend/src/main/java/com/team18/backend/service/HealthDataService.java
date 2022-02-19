@@ -1,10 +1,13 @@
 package com.team18.backend.service;
 
 import com.team18.backend.mapper.HealthMapper;
+import com.team18.backend.pojo.CalculatedSleepData;
 import com.team18.backend.pojo.HeartData;
 import com.team18.backend.pojo.HuData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -90,7 +93,23 @@ public class HealthDataService {
         return list;
     }
 
-
+    /**
+     * 用于画图的数据获取，前端返回一个横坐标个数，
+     * 根据横坐标个数决定获取几个十五分钟的平均值。
+     * (睡眠)
+     * 如果数据库中没有这么多条数据就返回所有的睡眠数据
+     *
+     */
+    @ExceptionHandler
+    public List<CalculatedSleepData> getManySleep(int count){
+            List<CalculatedSleepData> sleep;
+        try{
+             sleep = healthMapper.findSleep(count);
+        }catch (DataAccessException e){
+            sleep = healthMapper.findAllSleep();
+        }
+        return sleep;
+    }
 
 
 }

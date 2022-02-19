@@ -1,5 +1,6 @@
 package com.team18.backend.mapper;
 
+import com.team18.backend.pojo.CalculatedSleepData;
 import com.team18.backend.pojo.HeartData;
 import com.team18.backend.pojo.HuData;
 import org.apache.ibatis.annotations.*;
@@ -83,15 +84,14 @@ public interface HealthMapper {
     @Update( "UPDATE arduinodb.sleep_data SET deepSleep=#{deepSleep},paraSleep=#{paraSleep} WHERE dateIndex=#{dateIndex}")
     void updateSleep(@Param("deepSleep") double deepSleep, @Param("paraSleep") double paraSleep, @Param("dateIndex") String dateIndex);
     /**
-     * 取出睡眠时间
+     * 取出n个睡眠时间
      */
-
+    @Select("SELECT * FROM arduinodb.sleep_data ORDER BY dateIndex desc limit #{count};")
+    List<CalculatedSleepData> findSleep(@Param("count")int count);
     /**
-     * 获取一个时间段内的心率
+     * 取出所有睡眠时间
      */
-
-    /**
-     * 获取一个时间段内的血氧
-     */
+    @Select("SELECT * FROM arduinodb.sleep_data;")
+    List<CalculatedSleepData> findAllSleep();
 
 }
