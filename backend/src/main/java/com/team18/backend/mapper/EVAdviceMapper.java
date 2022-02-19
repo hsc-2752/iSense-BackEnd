@@ -14,7 +14,7 @@ public interface EVAdviceMapper {
      */
     @Select("select avg(temp) from arduinodb.nano_data " +
             "where NANOid between " +
-            "(select NANOid as count from arduinodb.nano_data order by NANOid desc limit 1)-9" +
+            "(select NANOid from arduinodb.nano_data order by NANOid desc limit 1)-9" +
             " and " +
             "(select NANOid from arduinodb.nano_data order by NANOid desc limit 1);")
     double getTempAdviceData();
@@ -24,7 +24,7 @@ public interface EVAdviceMapper {
      */
     @Select("select avg(humidity) from arduinodb.nano_data " +
             "where NANOid between " +
-            "(select NANOid as count from arduinodb.nano_data order by NANOid desc limit 1)-9" +
+            "(select NANOid from arduinodb.nano_data order by NANOid desc limit 1)-9" +
             " and " +
             "(select NANOid from arduinodb.nano_data order by NANOid desc limit 1);")
     double getHumAdviceData();
@@ -34,7 +34,7 @@ public interface EVAdviceMapper {
      */
     @Select("select avg(pressure) from arduinodb.nano_data " +
             "where NANOid between " +
-            "(select NANOid as count from arduinodb.nano_data order by NANOid desc limit 1)-9" +
+            "(select NANOid from arduinodb.nano_data order by NANOid desc limit 1)-9" +
             " and " +
             "(select NANOid from arduinodb.nano_data order by NANOid desc limit 1);")
     double getPressureAdviceData();
@@ -44,7 +44,7 @@ public interface EVAdviceMapper {
      */
     @Select("select avg(voice) from arduinodb.nano_data " +
             "where NANOid between " +
-            "(select NANOid as count from arduinodb.nano_data order by NANOid desc limit 1)-9" +
+            "(select NANOid from arduinodb.nano_data order by NANOid desc limit 1)-9" +
             " and " +
             "(select NANOid from arduinodb.nano_data order by NANOid desc limit 1);")
     double getNoiseAdviceData();
@@ -54,7 +54,7 @@ public interface EVAdviceMapper {
      */
     @Select("select avg(brightness) from arduinodb.nano_data " +
             "where NANOid between " +
-            "(select NANOid as count from arduinodb.nano_data order by NANOid desc limit 1)-9" +
+            "(select NANOid from arduinodb.nano_data order by NANOid desc limit 1)-9" +
             " and " +
             "(select NANOid from arduinodb.nano_data order by NANOid desc limit 1);")
     double getBrightAdviceData();
@@ -64,7 +64,7 @@ public interface EVAdviceMapper {
      */
     @Select("select avg(HCHO) from arduinodb.mega_data " +
             "where MEGAid between " +
-            "(select MEGAid as count from arduinodb.mega_data order by MEGAid desc limit 1)-9" +
+            "(select MEGAid from arduinodb.mega_data order by MEGAid desc limit 1)-9" +
             " and " +
             "(select MEGAid from arduinodb.mega_data order by MEGAid desc limit 1);")
     double getAirAdviceData();

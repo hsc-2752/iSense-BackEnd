@@ -1,31 +1,40 @@
 package com.team18.backend.controller;
 
+import com.team18.backend.service.HealthAdviceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HealthAdviceController {
+    @Autowired
+    private HealthAdviceService adviceService;
+
     /**
-     * Obtain heart rate advice from service layer, return it to front end.
+     * 获取有关心率的建议
      * @return heart rate advice
      */
     @RequestMapping(value = "/Advice/HeartRate",method = RequestMethod.GET)
     public String heartRateAdvice(){
-        return "heart rate advice";
+        return adviceService.getHRAdvice();
     }
 
     /**
-     * Obtain blood oxygen advice from service layer, return it to front end
+     * 获取有关血氧建议
      * @return blood oxygen advice
      */
     @RequestMapping(value = "/Advice/BloodOxygen",method = RequestMethod.GET)
     public String bloodOxygenAdvice(){
-        return "blood oxygen advice";
+        return adviceService.getBOSAdvice();
     }
 
+    /**
+     * 获取有关最新一条bmi的建议
+     * @return bmi advice
+     */
     @RequestMapping(value = "/Advice/BMI",method = RequestMethod.GET)
     public String bmiAdvice(){
-        return "BMI advice";
+        return adviceService.getBMIAdvice();
     }
 }

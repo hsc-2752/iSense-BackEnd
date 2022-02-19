@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 @RestController
-public class ReportComtroller {
+public class ReportController {
 
     @Autowired
     private EnvReportService envReportService;
