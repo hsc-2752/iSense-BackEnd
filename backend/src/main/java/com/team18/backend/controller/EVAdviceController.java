@@ -1,18 +1,25 @@
 package com.team18.backend.controller;
 
+import com.team18.backend.service.EnvAdviceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class EVAdviceController {
+
+    @Autowired
+    private EnvAdviceService adviceService;
+
     /**
      * Obtain heart rate advice from service layer, return it to the front end
      * @return temperature and humidity advice
      */
     @RequestMapping(value = "/Advice/TemAndHum",method = RequestMethod.GET)
     public String temAndHumAdvice(){
-        return "temperature and humidity advice";
+
+        return adviceService.getTemAndHumAdvice();
     }
 
     /**
@@ -21,7 +28,7 @@ public class EVAdviceController {
      */
     @RequestMapping(value = "/Advice/Pressure",method = RequestMethod.GET)
     public String pressureAdvice(){
-        return "pressure advice";
+        return adviceService.getPressureAdvice();
     }
     /**
      * Obtain noise advice from service layer, return it to the front end
@@ -29,7 +36,7 @@ public class EVAdviceController {
      */
     @RequestMapping(value = "/Advice/Noise",method = RequestMethod.GET)
     public String noiseAdvice(){
-        return "noise advice";
+        return adviceService.getNoiseAdvice();
     }
 
     /**
@@ -38,7 +45,7 @@ public class EVAdviceController {
      */
     @RequestMapping(value = "/Advice/Brightness",method = RequestMethod.GET)
     public String brightnessAdvice(){
-        return "brightness advice";
+        return adviceService.getBrightAdvice();
     }
 
      /**
@@ -47,7 +54,7 @@ public class EVAdviceController {
      */
     @RequestMapping(value = "/Advice/AirQuality",method = RequestMethod.GET)
     public String airQualityAdvice(){
-        return "air quality advice";
+        return adviceService.getAirQualityAdvice();
     }
 
 
