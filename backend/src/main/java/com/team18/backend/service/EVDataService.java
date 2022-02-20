@@ -5,6 +5,8 @@ import com.team18.backend.pojo.EnvironmentData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,57 +16,112 @@ public class EVDataService {
     private EVDataMapper evDataMapper;
 
     /**
-     *获取一小时内的温度平均值
+     * 用于画图的数据获取，前端返回一个横坐标个数，
+     * 根据横坐标个数决定获取几个十五分钟的平均值。
+     * (温度)
+     *
      */
-    public String findTemp(String temTime) {
-        return evDataMapper.findTem(temTime);
+    public List<Double> getManyAvgTemp(int count) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        long timeMill = System.currentTimeMillis();
+        List<Double> list = new ArrayList<>();
+        String time = dateFormat.format(timeMill);
+
+        for (int i = 0; i < count; i++) {
+            list.add(evDataMapper.findTem(time));
+            //TODO 开发测试为每五秒的平均值，正式测试差值改为一小时
+            timeMill -= 1000*5;
+            time = dateFormat.format(timeMill);
+        }
+       return list;
     }
 
 
     /**
      * 获取一小时内的湿度平均值
      */
-    public String findHumidity(String humTime) {
-        return evDataMapper.findHum(humTime);
+    public List<Double> getManyAvgHum(int count) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        long timeMill = System.currentTimeMillis();
+        List<Double> list = new ArrayList<>();
+        String time = dateFormat.format(timeMill);
+
+        for (int i = 0; i < count; i++) {
+            list.add(evDataMapper.findHum(time));
+            //TODO 开发测试为每五秒的平均值，正式测试差值改为一小时
+            timeMill -= 1000*5;
+            time = dateFormat.format(timeMill);
+        }
+        return list;
     }
 
     /**
      * Obtain the average indoor noise
      * 获取一小时内的噪音平均值
      */
-    public String findVoi(String noiseTime) {
-        return evDataMapper.findVoice(noiseTime);
+    public List<Double> getManyAvgNoise(int count) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        long timeMill = System.currentTimeMillis();
+        List<Double> list = new ArrayList<>();
+        String time = dateFormat.format(timeMill);
+
+        for (int i = 0; i < count; i++) {
+            list.add(evDataMapper.findVoice(time));
+            //TODO 开发测试为每五秒的平均值，正式测试差值改为一小时
+            timeMill -= 1000*5;
+            time = dateFormat.format(timeMill);
+        }
+        return list;
     }
 
 
     /**
      * 获取半小时内光照平均值
      */
-    public String findBright(String brightTime) {
-        return evDataMapper.findBrightness(brightTime);
-    }
+    public List<Double> getManyAvgBright(int count) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+        long timeMill = System.currentTimeMillis();
+        List<Double> list = new ArrayList<>();
+        String time = dateFormat.format(timeMill);
+
+        for (int i = 0; i < count; i++) {
+            list.add(evDataMapper.findBrightness(time));
+            //TODO 开发测试为每五秒的平均值，正式测试差值改为半小时
+            timeMill -= 1000*5;
+            time = dateFormat.format(timeMill);
+        }
+        return list;
+    }
 
     /**
      *获取半小时内空气质量
      */
-    public String findHcho(String airTime) {
-        return evDataMapper.findHCHO(airTime);
-    }
+    public List<Double> getManyAvgAQ(int count) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    /**
-     * 获取三小时的环境数据
-     */
-    public List<EnvironmentData> threeHourEVdata() {
-        return evDataMapper.reportData();
+        long timeMill = System.currentTimeMillis();
+        List<Double> list = new ArrayList<>();
+        String time = dateFormat.format(timeMill);
+
+        for (int i = 0; i < count; i++) {
+            list.add(evDataMapper.findHCHO(time));
+            //TODO 开发测试为每五秒的平均值，正式测试差值改为半小时
+            timeMill -= 1000*5;
+            time = dateFormat.format(timeMill);
+        }
+        return list;
     }
 
     /**
      * 获取睡眠期间各项环境因素数据
      */
 
-    public List<EnvironmentData> getSleepEVDataList(String st, String et){
-        return evDataMapper.sleepEVData(st,et);
+    public List<EnvironmentData> getSleepEVDataList(String startTime, String endTime){
+        return evDataMapper.sleepEVData(startTime,endTime);
     }
 
     /**

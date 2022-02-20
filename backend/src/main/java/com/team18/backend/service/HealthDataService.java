@@ -1,12 +1,14 @@
 package com.team18.backend.service;
 
 import com.team18.backend.mapper.HealthMapper;
+import com.team18.backend.pojo.CalculatedSleepData;
 import com.team18.backend.pojo.HeartData;
 import com.team18.backend.pojo.HuData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import javax.xml.crypto.Data;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,14 +55,17 @@ public class HealthDataService {
      * (血氧)
      */
     public List<Double> getManyAvgBOS(int count){
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date(System.currentTimeMillis());
-        String time = dateFormat.format(date);
         List<Double> list = new ArrayList<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long timeMill = System.currentTimeMillis();
+        String time = dateFormat.format(timeMill);
+
         for (int i = 0; i < count; i++) {
-           list.add(healthMapper.findBOS(time)) ;
-           time = timeCalculate(date);
+
+            list.add(healthMapper.findBOS(time));
+
+            timeMill = timeMill - 1000*5;
+            time = dateFormat.format(timeMill);
         }
         return list;
     }
@@ -68,28 +73,42 @@ public class HealthDataService {
      * 用于画图的数据获取，前端返回一个横坐标个数，
      * 根据横坐标个数决定获取几个十五分钟的平均值。
      * (心率)
+     *
      */
+    //TODO 开发测试为每五秒的平均值，正式测试改为15分钟的平均值
     public List<Double> getManyAvgHR(int count){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date(System.currentTimeMillis());
-        String time = dateFormat.format(date);
+
+       long timeMill = System.currentTimeMillis();
         List<Double> list = new ArrayList<>();
+        String time = dateFormat.format(timeMill);
+
         for (int i = 0; i < count; i++) {
-            list.add(healthMapper.findHR(time)) ;
-            time = timeCalculate(date);
+            list.add(healthMapper.findHR(time));
+
+            timeMill -= 1000*5;
+           time = dateFormat.format(timeMill);
+
         }
         return list;
     }
 
     /**
-     * 将时间减少15分钟
-     * @param date
-     * @return
+     * 用于画图的数据获取，前端返回一个横坐标个数，
+     * 根据横坐标个数决定获取几个十五分钟的平均值。
+     * (睡眠)
+     * 如果数据库中没有这么多条数据就返回所有的睡眠数据
+     *
      */
-    private String timeCalculate(Date date) {
-        date = new Date(date.getTime()-(1000*60*15));
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return format.format(date);
+    @ExceptionHandler
+    public List<CalculatedSleepData> getManySleep(int count){
+            List<CalculatedSleepData> sleep;
+        try{
+             sleep = healthMapper.findSleep(count);
+        }catch (DataAccessException e){
+            sleep = healthMapper.findAllSleep();
+        }
+        return sleep;
     }
 
 

@@ -1,18 +1,38 @@
 package com.team18.backend.service;
 
+import com.team18.backend.mapper.EVDataMapper;
 import com.team18.backend.pojo.EnvironmentData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Service
 public class EnvReportService {
+
+    @Autowired
+    private EVDataMapper evDataMapper;
+
+    /**
+     * 最新三小时内的环境数据
+     */
     private List<EnvironmentData> list;
 
-    public EnvReportService(List<EnvironmentData>list){
-      this.list = list;
+       /**
+     * 分析三个小时期间的环境数据
+     * @return 环境报告
+     */
+    public String getReport(){
+        this.list = evDataMapper.reportData();
+        String report = "";
+        report = report + generateOverall();
+        report = report + findAbnormal();
+        report = report +"All other conditions are very good!";
+        return report;
     }
+
     private int loopList(){
         int score = 100000;
         for (EnvironmentData e:list) {
@@ -22,8 +42,10 @@ public class EnvReportService {
     }
 
     private int tempCondition(EnvironmentData e){
-        Double temp = e.getTemp();
-        int condition = -5; //-5 is used in case the if statements are skipped
+        double temp = e.getTemp();
+        //-5 is used in case the if statements are skipped
+        int condition = -5;
+
         if (temp <= 11){
             condition = -2;
         }
@@ -43,7 +65,7 @@ public class EnvReportService {
     }
 
     private int humidityCondition(EnvironmentData e){
-        Double temp = e.getHumidity();
+        double temp = e.getHumidity();
         int condition = -5; //-5 is used in case the if statements are skipped
         if (temp <= 30){
             condition = -2;
@@ -74,8 +96,9 @@ public class EnvReportService {
     }
 
     private int noiseCondition(EnvironmentData e){
-        Double temp = e.getVoice();
-        int condition = -5; //-5 is used in case the if statements are skipped
+        double temp = e.getVoice();
+        //-5 is used in case the if statements are skipped
+        int condition = -5;
         if (temp <= 50){
             condition = 0;
         }
@@ -89,8 +112,9 @@ public class EnvReportService {
     }
 
     private int pressureCondition(EnvironmentData e){
-        Double temp = e.getPressure();
-        int condition = -5; //-5 is used in case the if statements are skipped
+        double temp = e.getPressure();
+        //-5 is used in case the if statements are skipped
+        int condition = -5;
         if (temp <= 950){
             condition = -1;
         }
@@ -176,11 +200,5 @@ public class EnvReportService {
         return abnormal;
     }
 
-    public String getReport(){
-        String report = "";
-        report = report + generateOverall();
-        report = report + findAbnormal();
-        report = report +"All other conditions are very good!";
-        return report;
-    }
+
 }
