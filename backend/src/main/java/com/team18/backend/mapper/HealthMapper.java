@@ -39,7 +39,7 @@ public interface HealthMapper {
     @Select("SELECT BOS" +
             " FROM arduinodb.mega_data" +
             " ORDER BY MEGAid DESC LIMIT 50;")
-    List<String> findReportBOS();
+    List<Double> findReportBOS();
 
     /**
      *获取十五分钟内的心率平均值
@@ -58,7 +58,7 @@ public interface HealthMapper {
     @Select("SELECT HearTRate " +
             "FROM arduinodb.mega_data " +
             "ORDER BY MEGAid DESC LIMIT 50")
-    List<String> findReportHR();
+    List<Double> findReportHR();
 
     /**
      * 存入bmi数据

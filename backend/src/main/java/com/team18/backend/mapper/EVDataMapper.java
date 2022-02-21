@@ -91,4 +91,30 @@ EVDataMapper {
             "on mega_data.TimeIndex = nano_data.TimeIndex " +
             "where arduinodb.nano_data.TimeIndex between #{startTime} and #{endTime}")
     List<EnvironmentData> sleepEVData(String startTime, String endTime);
+
+
+    /**
+     * 取出前15*60*60(即十五分钟的温度数据)，用于overall report
+     */
+    //TODO 开发测试时使用前10条，正式测试时修改为15*60*60。
+    @Select("select temp from arduinodb.nano_data order by NANOid desc limit 10;")
+    List<Double> findReportTemp();
+
+    /**
+     * 取出前15*60*60(即十五分钟的噪音数据)，用于overall report
+     */
+    //TODO 开发测试时使用前10条，正式测试时修改为15*60*60。
+    @Select("select voice from arduinodb.nano_data order by NANOid desc limit 10;")
+    List<Double> findReportNoise();
+
+    /**
+     * 取出前15*60*60(即十五分钟的空气质量数据)，用于overall report
+     */
+    //TODO 开发测试时使用前10条，正式测试时修改为15*60*60。
+    @Select("select HCHO from arduinodb.mega_data order by MEGAid desc limit 10;")
+    List<Double> findReportAirQuality();
+
+
+
+
 }

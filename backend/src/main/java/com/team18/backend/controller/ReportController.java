@@ -4,6 +4,7 @@ import com.team18.backend.mapper.EVDataMapper;
 import com.team18.backend.pojo.SleepData;
 import com.team18.backend.service.EnvReportService;
 import com.team18.backend.service.HealthReportService;
+import com.team18.backend.service.OverallReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,5 +45,12 @@ public class ReportController {
         sleepData.setStartTime(startTime);
         sleepData.setEndTime(endTime);
         return healthReportService.getReport(isAwaken);
+    }
+
+    @Autowired
+    OverallReportService overallReportService;
+    @RequestMapping(value = "/getOverallReport",method = RequestMethod.GET)
+    public String overallReport(){
+        return overallReportService.getOverallReport();
     }
 }
