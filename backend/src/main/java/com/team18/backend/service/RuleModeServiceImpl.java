@@ -3,6 +3,7 @@ package com.team18.backend.service;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.comparator.CompareUtil;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.NumberUtil;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -62,5 +63,26 @@ public class RuleModeServiceImpl implements RuleModeService{
             return false;
         }
         return CompareUtil.compare(list.stream().max(Comparable::compareTo).get(), Convert.toBigDecimal(ruleRestrictions)) < 0;
+    }
+
+    @Override
+    public boolean isDifferN(Integer differ, List<BigDecimal> list) {
+        if(Objects.isNull(list) || Objects.isNull(differ)){
+            return false;
+        }
+        return CompareUtil.compare(list.stream().max(Comparable::compareTo).get(),list.stream().min(Comparable::compareTo).get())>differ;
+    }
+
+    @Override
+    public boolean isAvgHigher(Integer ruleRestrictions, List<BigDecimal> list) {
+        if (Objects.isNull(ruleRestrictions) || CollectionUtil.isEmpty(list)) {
+            return false;
+        }
+        BigDecimal sum = BigDecimal.valueOf(0);
+        for (BigDecimal number: list) {
+            sum = sum.add(number);
+        }
+        return CompareUtil.compare(sum.divide(BigDecimal.valueOf(list.size())),Convert.toBigDecimal(ruleRestrictions))>0;
+
     }
 }

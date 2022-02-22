@@ -35,4 +35,15 @@ public interface RuleModeService {
      * 是否低于
      */
     boolean isLess(Integer ruleRestrictions, List<BigDecimal>list);
+
+    /**
+     * 最高值与最小值是否相差n
+     */
+    boolean isDifferN(Integer differ, List<BigDecimal>list);
+
+    /**
+     * 平均值是否高于
+     */
+    boolean isAvgHigher(Integer ruleRestrictions, List<BigDecimal>list);
+
 }

@@ -53,7 +53,6 @@ public class OverallReportService {
         return "";
     }
 
-
     /**
      * 根据论文 [1]兰丽. 室内环境对人员工作效率影响机理与评价研究[D].上海交通大学,2010. ，显示，在温度高于人体舒适的室内进行工作会使人工作效率下降，
      * 而Witterseh研究了温度对模拟办公任务的影响，发现从中性环境到稍暖的环境温度对
@@ -101,17 +100,63 @@ public class OverallReportService {
         convertDataType();
         String hrReport = "";
         //因为数据库拿出来的数据是倒序的，所以这里用判断是否下降的方法
-        if (ruleModeService.isDescending(hrList)) {
-            hrReport+= "Your heart rate is increasing, which may be caused by the following reasons: ";
+        //当数据为持续上升或过快时
+        if (ruleModeService.isDescending(hrList) || ruleModeService.isHigher(90,hrList) ) {
+            hrReport+= " Your heart rate is increasing or staying around a high value, which may be caused by the following reasons: ";
            if(ruleModeService.isHigher(95,noiseList)){
-               hrReport+="Data shows that ambient noise is greater than 95 decibels within 15 minutes. " +
+               hrReport+=" Data shows that ambient noise is greater than 95 decibels within 15 minutes. " +
                        "According to research, when people are exposed to noise above 95 decibels for a long time, " +
                        "they have no obvious adaptation to noise and their heart rate will continue to increase.";
            }
-           if(ruleModeService.isHigher(35,airList)){
-               hrReport+="developing";
+           if( ruleModeService.isHigher(35,airList)){
+
+               hrReport += " The data shows that your indoor air quality is average or even not very good. ";
+
+               if(ruleModeService.isDifferN(5,tempList))
+               {
+                   hrReport +=" According to the research, when the person is in a certain range of temperature environment " +
+                           "with little fluctuation and in the poor ventilation environment, the human experience is always in a state of mental tension, " +
+                           "which causes the heart rate to rise.";
+               }
+               else if(ruleModeService.isHigher(25,tempList))
+               {
+                   hrReport+=" Research shows that people who work indoors in warmer temperatures than they are comfortable with are less productive. " +
+                           "You can even have a tachycardia.";
+               }
+               hrReport +=" And staying in a stuffy room for a long time may make people feel tired.";
+
+           }else if(ruleModeService.isLess(35,airList)){
+               hrReport +=" The data shows that the air in your room is fine now.";
+
+               if(ruleModeService.isHigher(25,tempList)){
+                   hrReport += " Research shows that people who work indoors in warmer temperatures than they are comfortable with are less productive. " +
+                           "You can even have a tachycardia.";
+               }
+                    hrReport+=" Aside from environmental causes, it could also be because you stayed up late last night or didn't get enough rest.";
+
            }
         }
+        //心率持续下降
+        else if(ruleModeService.isAscending(hrList)){
+            if(!ruleModeService.isAvgHigher(95,noiseList)){
+                if(ruleModeService.isLess(95,noiseList) && ruleModeService.isAvgHigher(70,noiseList) ){
+                    hrReport+=" The data shows that your ambient noise for the first fifteen minutes is always less than 95 but on average greater than 70. " +
+                            "According to research, people exposed to noise below 95 decibels experience a temporary recovery in heart rate due to ear adaptation to noise. " +
+                            "But being in a noisy environment for a long time can make you feel tired.";
+                }
+            }
+            hrReport+=" According to the cardiovascular medicine department of Affiliated Hospital of Yanbian University," +
+                    " a case of heart rate drop caused by smoking accompanied by dizziness, chest pain and chest tightness was studied. " +
+                    "Smoking can cause an immediate drop in heart rate. If you have smoked in the last 15 minutes, " +
+                    "excluding environmental and physical conditions, your heart rate may have dropped in the last 15 minutes because of smoking.";
+
+        }
+        //心率既不持续下降也不持续上升且处于正常范围
+        else if(ruleModeService.isAvgHigher(60,hrList) && !ruleModeService.isAvgHigher(90,hrList))
+        {
+            hrReport+= " Your average heart rate for the last 15 minutes is within the normal range.";
+        }
+        hrReport+=" For more detailed reports on environment and heart rate, go to the Environment or Health page.";
        return hrReport;
     }
 
