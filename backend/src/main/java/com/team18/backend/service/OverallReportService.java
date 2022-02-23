@@ -33,14 +33,20 @@ public class OverallReportService {
     private List<BigDecimal> hrList;
 
     //温度标准值
-    private static final double FIRST_LEVEL_TEMP = 21.0;
-    private static final double SECOND_LEVEL_TEMP = 25.0;
-    private static final double THIRD_LEVEL_TEMP = 32.2;
+    private static final int COMFORT_STAND_TEMP = 25;
+    private static final int MOST_DIFFER_TEMP = 5;
 
     //空气质量标准值
-    private static final double FIRST_LEVEL_AQ = 35.0;
-    private static final double SECOND_LEVEL_AQ = 45.0;
+    private static final int NORMAL_LEVEL_AQ = 35;
 
+
+    //噪音标准值
+    private static final int NOISY_STAND = 95;
+    private static final int QUITE_NOISY_AVG_STAND = 70;
+
+    //心率标准值
+    private static final int HIGH_HR_STAND = 90;
+    private static final int LOW_HR_STAND = 60;
 
 
     //TODO eeg 待实现
@@ -101,34 +107,34 @@ public class OverallReportService {
         String hrReport = "";
         //因为数据库拿出来的数据是倒序的，所以这里用判断是否下降的方法
         //当数据为持续上升或过快时
-        if (ruleModeService.isDescending(hrList) || ruleModeService.isHigher(90,hrList) ) {
+        if (ruleModeService.isDescending(hrList) || ruleModeService.isHigher(HIGH_HR_STAND,hrList) ) {
             hrReport+= " Your heart rate is increasing or staying around a high value, which may be caused by the following reasons: ";
-           if(ruleModeService.isHigher(95,noiseList)){
+           if(ruleModeService.isHigher(NOISY_STAND, noiseList)){
                hrReport+=" Data shows that ambient noise is greater than 95 decibels within 15 minutes. " +
                        "According to research, when people are exposed to noise above 95 decibels for a long time, " +
                        "they have no obvious adaptation to noise and their heart rate will continue to increase.";
            }
-           if( ruleModeService.isHigher(35,airList)){
+           if( ruleModeService.isHigher(NORMAL_LEVEL_AQ, airList)){
 
                hrReport += " The data shows that your indoor air quality is average or even not very good. ";
 
-               if(ruleModeService.isDifferN(5,tempList))
+               if(ruleModeService.isDifferN(MOST_DIFFER_TEMP ,tempList))
                {
                    hrReport +=" According to the research, when the person is in a certain range of temperature environment " +
                            "with little fluctuation and in the poor ventilation environment, the human experience is always in a state of mental tension, " +
                            "which causes the heart rate to rise.";
                }
-               else if(ruleModeService.isHigher(25,tempList))
+               else if(ruleModeService.isHigher(COMFORT_STAND_TEMP,tempList))
                {
                    hrReport+=" Research shows that people who work indoors in warmer temperatures than they are comfortable with are less productive. " +
                            "You can even have a tachycardia.";
                }
                hrReport +=" And staying in a stuffy room for a long time may make people feel tired.";
 
-           }else if(ruleModeService.isLess(35,airList)){
+           }else if(ruleModeService.isLess(NORMAL_LEVEL_AQ,airList)){
                hrReport +=" The data shows that the air in your room is fine now.";
 
-               if(ruleModeService.isHigher(25,tempList)){
+               if(ruleModeService.isHigher(COMFORT_STAND_TEMP,tempList)){
                    hrReport += " Research shows that people who work indoors in warmer temperatures than they are comfortable with are less productive. " +
                            "You can even have a tachycardia.";
                }
@@ -138,8 +144,8 @@ public class OverallReportService {
         }
         //心率持续下降
         else if(ruleModeService.isAscending(hrList)){
-            if(!ruleModeService.isAvgHigher(95,noiseList)){
-                if(ruleModeService.isLess(95,noiseList) && ruleModeService.isAvgHigher(70,noiseList) ){
+            if(!ruleModeService.isAvgHigher(NOISY_STAND,noiseList)){
+                if(ruleModeService.isLess(NOISY_STAND,noiseList) && ruleModeService.isAvgHigher(QUITE_NOISY_AVG_STAND,noiseList) ){
                     hrReport+=" The data shows that your ambient noise for the first fifteen minutes is always less than 95 but on average greater than 70. " +
                             "According to research, people exposed to noise below 95 decibels experience a temporary recovery in heart rate due to ear adaptation to noise. " +
                             "But being in a noisy environment for a long time can make you feel tired.";
@@ -152,7 +158,7 @@ public class OverallReportService {
 
         }
         //心率既不持续下降也不持续上升且处于正常范围
-        else if(ruleModeService.isAvgHigher(60,hrList) && !ruleModeService.isAvgHigher(90,hrList))
+        else if(ruleModeService.isAvgHigher(LOW_HR_STAND,hrList) && !ruleModeService.isAvgHigher(HIGH_HR_STAND,hrList))
         {
             hrReport+= " Your average heart rate for the last 15 minutes is within the normal range.";
         }
