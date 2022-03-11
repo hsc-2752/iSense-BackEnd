@@ -65,6 +65,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.25</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -138,11 +143,11 @@
                 <native-buildtools.version>0.9.9</native-buildtools.version>
             </properties>
             <dependencies>
-                <dependency>
-                    <groupId>org.junit.platform</groupId>
-                    <artifactId>junit-platform-launcher</artifactId>
-                    <scope>test</scope>
-                </dependency>
+<!--                <dependency>-->
+<!--                    <groupId>org.junit.platform</groupId>-->
+<!--                    <artifactId>junit-platform-launcher</artifactId>-->
+<!--                    <scope>test</scope>-->
+<!--                </dependency>-->
             </dependencies>
 <!--            <build>-->
 <!--                <plugins>-->
