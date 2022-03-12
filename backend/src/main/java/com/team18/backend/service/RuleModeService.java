@@ -46,4 +46,8 @@ public interface RuleModeService {
      */
     boolean isAvgHigher(Integer ruleRestrictions, List<BigDecimal>list);
 
+    /**
+     * 是否平均低于
+     */
+    boolean isAvgLower(Integer ruleRestrictions, List<BigDecimal>list);
 }

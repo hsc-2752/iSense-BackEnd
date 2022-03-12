@@ -104,4 +104,16 @@ public class RuleModeServiceImpl implements RuleModeService{
         return CompareUtil.compare(sum.divide(BigDecimal.valueOf(list.size())),Convert.toBigDecimal(ruleRestrictions))>0;
 
     }
+
+    @Override
+    public boolean isAvgLower(Integer ruleRestrictions, List<BigDecimal> list) {
+        if(Objects.isNull(ruleRestrictions) || CollectionUtil.isEmpty(list)){
+            return false;
+        }
+        BigDecimal sum = BigDecimal.valueOf(0);
+        for (BigDecimal number : list){
+            sum = sum.add(number);
+        }
+        return CompareUtil.compare(sum.divide(BigDecimal.valueOf(list.size())),Convert.toBigDecimal(ruleRestrictions))>0;
+    }
 }
