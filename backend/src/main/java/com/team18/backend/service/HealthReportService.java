@@ -200,7 +200,6 @@ public class HealthReportService {
         String abnormal = "";
         ArrayList<Integer> temp_2 = new ArrayList<>();
         ArrayList<Integer> temp_1 = new ArrayList<>();
-       // ArrayList<Integer> temp_0 = new ArrayList<>();
         ArrayList<Integer> temp_n1 = new ArrayList<>();
         ArrayList<Integer> temp_n2 = new ArrayList<>();
         double tempMax = 0;

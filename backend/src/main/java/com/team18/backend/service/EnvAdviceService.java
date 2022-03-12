@@ -101,10 +101,10 @@ public class EnvAdviceService {
     if(air<= FRESH_AIR_STAND ){
         return "Indoor air quality is very good for human health.";
     }
-    else if(air <= NORMAL_AIR_STAND && air > FRESH_AIR_STAND){
+    else if(air <= NORMAL_AIR_STAND){
         return "Indoor air quality is better, suitable for daily life.";
     }
-    else if(air <= POLLUTE_AIR_STAND && air > NORMAL_AIR_STAND){
+    else if(air <= POLLUTE_AIR_STAND){
         return "Indoor air quality is general, " +
                 "there will be no great impact on the human body, " +
                 "but it is still recommended that you often open Windows for ventilation.";

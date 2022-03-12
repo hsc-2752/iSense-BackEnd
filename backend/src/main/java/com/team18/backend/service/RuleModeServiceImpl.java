@@ -16,6 +16,7 @@ import java.util.Objects;
 public class RuleModeServiceImpl implements RuleModeService{
     @Override
     public boolean isAscending(List<BigDecimal> list) {
+        int count = 0;
         if(CollectionUtil.isEmpty(list)){
             return false;
         }
@@ -23,6 +24,16 @@ public class RuleModeServiceImpl implements RuleModeService{
         BigDecimal prev = Convert.toBigDecimal(Double.MIN_VALUE);
         for (BigDecimal number:list) {
             if(CompareUtil.compare(number,prev)<=0){
+                if(CompareUtil.compare(number,prev)<=number.add(number).negate().intValue()){
+                   count+=2;
+                }
+                else{
+                    count++;
+                }
+                //break;
+            }
+            //如果不符合的太多，为false
+            if(count> (list.size()/2)){
                 result = false;
                 break;
             }
@@ -33,6 +44,7 @@ public class RuleModeServiceImpl implements RuleModeService{
 
     @Override
     public boolean isDescending(List<BigDecimal> list) {
+        int count = 0;
         if (CollectionUtil.isEmpty(list)) {
             return false;
         }
@@ -40,6 +52,14 @@ public class RuleModeServiceImpl implements RuleModeService{
         BigDecimal prev = Convert.toBigDecimal(Double.MAX_VALUE);
         for (BigDecimal number : list) {
             if(CompareUtil.compare(number, prev) >= 0){
+                if(CompareUtil.compare(number,prev)>number.add(number).intValue()){
+                    count+=2;
+                }
+                else {
+                    count++;
+                }
+            }
+            if(count>(list.size())/2){
                 result = false;
                 break;
             }

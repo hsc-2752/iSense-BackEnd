@@ -35,7 +35,4 @@ public interface HealthAdviceMapper {
     double getNewestBMI();
 
 
-
-
-
 }

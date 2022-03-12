@@ -22,7 +22,8 @@ public class OverallReportService {
     private EVDataMapper evDataMapper;
 
     @Autowired
-    RuleModeService ruleModeService;
+    private RuleModeService ruleModeService;
+
 
     private List<BigDecimal> tempList;
 
@@ -51,13 +52,9 @@ public class OverallReportService {
 
     //TODO eeg 待实现
     public String getOverallReport(){
-        return getHRReport()+
-        getEEGReport();
+        return getHRReport();
     }
 
-    private String getEEGReport() {
-        return "";
-    }
 
     /**
      * 根据论文 [1]兰丽. 室内环境对人员工作效率影响机理与评价研究[D].上海交通大学,2010. ，显示，在温度高于人体舒适的室内进行工作会使人工作效率下降，
