@@ -8,6 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * 用于获得健康数据的报告，报告包括综合前十五分钟的健康数据进行分析，睡眠报告，
+ * 以及每个不同数据类型的分析，包括不适宜数据占比，最大值，最小值，平均值。
+ */
 @Service
 @Transactional
 public class HealthReportService {
@@ -31,8 +36,6 @@ public class HealthReportService {
     private String report;
 
 
-
-
     public String getReport(boolean isAwaken){
         //初始化
         this.heartRateList = healthMapper.findReportHR();
@@ -42,6 +45,8 @@ public class HealthReportService {
          report = "";
         report = report + generateOverall();
         report = report + findAbnormal();
+        report += findHRAbnormal();
+        report += findBOSAbnormal();
         sleepReport();
         report = report +"All other conditions are very good!";
         return report;
@@ -245,6 +250,33 @@ public class HealthReportService {
         if (tempn2Percent > 0){
             abnormal = abnormal +" ,"+temp2Percent + "% of time are too low";
             abnormal = abnormal + ", The temperature has dropped to the lowest to "+tempMin+"degrees Celsius";
+        }
+        return abnormal;
+    }
+
+    /**
+     * 对十五分钟内的心率数据进行分析
+     * @return
+     */
+    //TODO
+    private String findHRAbnormal(){
+        String abnormal = "";
+        for (double hr: heartRateList ) {
+
+        }
+
+        return abnormal;
+    }
+
+    /**
+     * 对十五分钟的血氧数据进行分析
+     * @return
+     */
+    //TODO
+    private String findBOSAbnormal(){
+        String abnormal = "";
+        for (double bos: bloodOxygenList) {
+
         }
         return abnormal;
     }
