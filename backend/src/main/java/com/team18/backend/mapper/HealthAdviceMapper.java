@@ -33,4 +33,6 @@ public interface HealthAdviceMapper {
      */
     @Select("select bmi from arduinodb.bmi_data order by timeIndex desc limit 1;")
     double getNewestBMI();
+
+
 }

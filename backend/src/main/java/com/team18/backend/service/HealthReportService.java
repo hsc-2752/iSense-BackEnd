@@ -17,11 +17,11 @@ public class HealthReportService {
     /**
      * 十五分钟内的心率
      */
-    private List<String> heartRateList;
+    private List<Double> heartRateList;
     /**
      * 十五分钟内的血氧
      */
-    private List<String> bloodOxygenList;
+    private List<Double> bloodOxygenList;
 
     @Autowired
     private SleepService sleepService;
@@ -49,11 +49,11 @@ public class HealthReportService {
 
     private int loopList(){
         int score = 1000;
-        for (String s : heartRateList) {
-            score = score - Math.abs(heartRateCondition(Double.valueOf(s)));
+        for (double s : heartRateList) {
+            score = score - Math.abs(heartRateCondition(s));
         }
-        for (String s : bloodOxygenList) {
-            score = score - Math.abs(bosCondition(Double.valueOf(s)));
+        for (double s : bloodOxygenList) {
+            score = score - Math.abs(bosCondition(s));
         }
         score = score - (int) sleep.charAt(0);
         return score/10;
@@ -200,32 +200,31 @@ public class HealthReportService {
         String abnormal = "";
         ArrayList<Integer> temp_2 = new ArrayList<>();
         ArrayList<Integer> temp_1 = new ArrayList<>();
-       // ArrayList<Integer> temp_0 = new ArrayList<>();
         ArrayList<Integer> temp_n1 = new ArrayList<>();
         ArrayList<Integer> temp_n2 = new ArrayList<>();
         double tempMax = 0;
         double tempMin = 10000;
 
         for(int i = 0; i < heartRateList.size();i++){
-            if (Double.parseDouble(heartRateList.get(i))>100.0){
+            if (heartRateList.get(i)>100.0){
                 temp_2.add(i);
-                if (Double.parseDouble(heartRateList.get(i))>tempMax){
-                    tempMax = Double.parseDouble(heartRateList.get(i));
+                if (heartRateList.get(i)>tempMax){
+                    tempMax = heartRateList.get(i);
                 }
             }
-            if (Double.parseDouble(heartRateList.get(i))<= 60.0){
+            if (heartRateList.get(i)<= 60.0){
                 temp_n2.add(i);
-                if (Double.parseDouble(heartRateList.get(i))<tempMin){
-                    tempMin = Double.parseDouble(heartRateList.get(i));
+                if (heartRateList.get(i)<tempMin){
+                    tempMin =heartRateList.get(i);
                 }
             }
-            if (Double.parseDouble(heartRateList.get(i)) >60.0 && Double.parseDouble(heartRateList.get(i)) <= 70.0){
+            if (heartRateList.get(i) >60.0 && heartRateList.get(i) <= 70.0){
                 temp_n1.add(i);
             }
 //            if (list.get(i).getTemp() > 18 && list.get(i).getTemp() <= 25){
 //                temp_0.add(i);
 //            }
-            if (Double.parseDouble(heartRateList.get(i)) > 90.0 && Double.parseDouble(heartRateList.get(i))<= 100.0){
+            if (heartRateList.get(i) > 90.0 && heartRateList.get(i)<= 100.0){
                 temp_1.add(i);
             }
         }
