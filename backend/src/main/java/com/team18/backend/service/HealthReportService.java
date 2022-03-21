@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -16,6 +17,13 @@ import java.util.List;
 @Service
 @Transactional
 public class HealthReportService {
+    public static final int LOW_STD = 60;
+    public static final int SUB_LOW_STD = 70;
+    public static final int HIGH_STAD = 90;
+    public static final int TO_HIGH_STAD = 100;
+    public static final int O_LACK = 90;
+    public static final int O_STAD = 95;
+    public static final double rartioErr = 0.05;
     @Autowired
     private HealthMapper healthMapper;
 
@@ -148,19 +156,19 @@ public class HealthReportService {
         //-5 is used in case the if statements are skipped
         int condition = -5;
 
-        if (hr <= 60){
+        if (hr <= LOW_STD){
             condition = -2;
         }
-        if (hr >60 && hr <= 70){
+        if (hr >LOW_STD && hr <= SUB_LOW_STD){
             condition = -1;
         }
-        if (hr > 70 && hr <= 90){
+        if (hr > SUB_LOW_STD && hr <= HIGH_STAD){
             condition = 0;
         }
-        if (hr > 90 && hr <= 100){
+        if (hr > HIGH_STAD && hr <= TO_HIGH_STAD){
             condition = 1;
         }
-        if (hr > 100){
+        if (hr > TO_HIGH_STAD){
             condition = 2;
         }
         return condition;
@@ -170,13 +178,13 @@ public class HealthReportService {
     private int bosCondition(Double bos){
 
         int condition = -5; //-5 is used in case the if statements are skipped
-        if (bos <= 90){
+        if (bos <= O_LACK){
             condition = -50;
         }
-        if (bos > 90 && bos <= 95){
+        if (bos > O_LACK && bos <= O_STAD){
             condition = -25;
         }
-        if (bos > 95){
+        if (bos > O_STAD){
             condition = 0;
         }
         return condition;
@@ -211,25 +219,25 @@ public class HealthReportService {
         double tempMin = 10000;
 
         for(int i = 0; i < heartRateList.size();i++){
-            if (heartRateList.get(i)>100.0){
+            if (heartRateList.get(i)>TO_HIGH_STAD){
                 temp_2.add(i);
                 if (heartRateList.get(i)>tempMax){
                     tempMax = heartRateList.get(i);
                 }
             }
-            if (heartRateList.get(i)<= 60.0){
+            if (heartRateList.get(i)<= LOW_STD){
                 temp_n2.add(i);
                 if (heartRateList.get(i)<tempMin){
                     tempMin =heartRateList.get(i);
                 }
             }
-            if (heartRateList.get(i) >60.0 && heartRateList.get(i) <= 70.0){
+            if (heartRateList.get(i) >LOW_STD && heartRateList.get(i) <= SUB_LOW_STD){
                 temp_n1.add(i);
             }
 //            if (list.get(i).getTemp() > 18 && list.get(i).getTemp() <= 25){
 //                temp_0.add(i);
 //            }
-            if (heartRateList.get(i) > 90.0 && heartRateList.get(i)<= 100.0){
+            if (heartRateList.get(i) > HIGH_STAD && heartRateList.get(i)<= TO_HIGH_STAD){
                 temp_1.add(i);
             }
         }
@@ -256,27 +264,55 @@ public class HealthReportService {
 
     /**
      * 对十五分钟内的心率数据进行分析
+     * 不正常值占比 max min
      * @return
      */
     //TODO
     private String findHRAbnormal(){
-        String abnormal = "";
+        int abCounter = 0;
+        double abratio;
+        double max, min;
+        String abnormal;
+        abnormal = "In the past 15 minutes, ";
         for (double hr: heartRateList ) {
-
+            if (!(hr > SUB_LOW_STD && hr < HIGH_STAD))
+                abCounter++;
         }
-
+        Collections.sort(heartRateList);
+        max = heartRateList.get(0);
+        min = heartRateList.get(heartRateList.size()-1);
+        abratio = abCounter/(double)heartRateList.size();
+        if (abratio > rartioErr){
+            abnormal += "if you are not exercising, " +
+                    "your abnormal heart-rate proportion has exceeded 5%, and your " +
+                    "maximum heart rate and minimum heart rate are: "+max+" and "+min;
+        }else{
+            abnormal += "your heart-rate was in a nonmal state," +
+                    " and your maximum heart rate and minimum heart rate are: "+max+" and "+min;
+        }
         return abnormal;
     }
 
     /**
      * 对十五分钟的血氧数据进行分析
+     * max min avg
      * @return
      */
     //TODO
     private String findBOSAbnormal(){
-        String abnormal = "";
+        String abnormal = "In the past 15 minutes, ";
+        double sum = 0, max, min, avg;
         for (double bos: bloodOxygenList) {
-
+            sum += bos;
+        }
+        Collections.sort(bloodOxygenList);
+        max = bloodOxygenList.get(0);
+        min = bloodOxygenList.get(bloodOxygenList.size()-1);
+        avg = sum/bloodOxygenList.size();
+        if (avg > 0.9377){
+            abnormal += "your blood oxygen saturation is very normal, with maximum and minimum value: " + max + ", " + min;
+        }else{
+            abnormal += "your general blood oxygen saturation was abnormal, with maximum and minimum value: " + max + ", " + min;
         }
         return abnormal;
     }
