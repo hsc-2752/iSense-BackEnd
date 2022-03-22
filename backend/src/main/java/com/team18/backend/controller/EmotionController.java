@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class EmotionController {
 
 
-    EmotionService emoService;
 
+    EmotionService emoService;
     @Autowired
     EmotionController (EmotionService emotionService){
         this.emoService = emotionService;

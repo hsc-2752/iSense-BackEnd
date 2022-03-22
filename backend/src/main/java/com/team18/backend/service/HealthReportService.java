@@ -49,6 +49,9 @@ public class HealthReportService {
         this.heartRateList = healthMapper.findReportHR();
         this.bloodOxygenList = healthMapper.findReportBOS();
         this.sleep = sleepService.evaluate();
+        if(sleep == null){
+            sleep = "0000";
+        }
         this.isAwaken = isAwaken;
          report = "";
         report = report + generateOverall();
@@ -145,7 +148,7 @@ public class HealthReportService {
                     report = report + "There's a lot of reasons that one might woke up suddenly. Stress is one of them. If that's the case for you, maybe try do some exercise or listen to some music before sleep. However, if you wake up suddenly for several days in a row, please seek medical attention!";
                     break;
                 default:
-                    System.out.println("not a valid sleep condition");
+                   report+=" Sleep data error";
             }
         }
 
@@ -278,17 +281,22 @@ public class HealthReportService {
                 abCounter++;
         }
         Collections.sort(heartRateList);
-        max = heartRateList.get(0);
-        min = heartRateList.get(heartRateList.size()-1);
-        abratio = abCounter/(double)heartRateList.size();
-        if (abratio > rartioErr){
-            abnormal += "if you are not exercising, " +
-                    "your abnormal heart-rate proportion has exceeded 5%, and your " +
-                    "maximum heart rate and minimum heart rate are: "+max+" and "+min;
-        }else{
-            abnormal += "your heart-rate was in a nonmal state," +
-                    " and your maximum heart rate and minimum heart rate are: "+max+" and "+min;
+        try{
+            max = heartRateList.get(0);
+            min = heartRateList.get(heartRateList.size()-1);
+            abratio = abCounter/(double)heartRateList.size();
+            if (abratio > rartioErr){
+                abnormal += "if you are not exercising, " +
+                        "your abnormal heart-rate proportion has exceeded 5%, and your " +
+                        "maximum heart rate and minimum heart rate are: "+max+" and "+min;
+            }else{
+                abnormal += "your heart-rate was in a nonmal state," +
+                        " and your maximum heart rate and minimum heart rate are: "+max+" and "+min;
+            }
+        } catch (Exception e){
+            abnormal+=" HR data Error";
         }
+
         return abnormal;
     }
 
@@ -304,14 +312,19 @@ public class HealthReportService {
             sum += bos;
         }
         Collections.sort(bloodOxygenList);
-        max = bloodOxygenList.get(0);
-        min = bloodOxygenList.get(bloodOxygenList.size()-1);
-        avg = sum/bloodOxygenList.size();
-        if (avg > 0.9377){
-            abnormal += "your blood oxygen saturation is very normal, with maximum and minimum value: " + max + ", " + min;
-        }else{
-            abnormal += "your general blood oxygen saturation was abnormal, with maximum and minimum value: " + max + ", " + min;
+        try{
+            max = bloodOxygenList.get(0);
+            min = bloodOxygenList.get(bloodOxygenList.size()-1);
+            avg = sum/bloodOxygenList.size();
+            if (avg > 0.9377){
+                abnormal += "your blood oxygen saturation is very normal, with maximum and minimum value: " + max + ", " + min;
+            }else{
+                abnormal += "your general blood oxygen saturation was abnormal, with maximum and minimum value: " + max + ", " + min;
+            }
+        }catch (Exception e){
+            abnormal += "BOS data error";
         }
+
         return abnormal;
     }
 

@@ -17,15 +17,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReportController {
 
 
-    private EnvReportService envReportService;
-    private HealthReportService healthReportService;
-    private SleepData sleepData;
+     EnvReportService envReportService;
+     HealthReportService healthReportService;
+     SleepData sleepData;
+     OverallReportService overallReportService;
 
     @Autowired
-    ReportController (EnvReportService envReportService, HealthReportService healthReportService, SleepData sleepData){
+    ReportController (EnvReportService envReportService,
+                      HealthReportService healthReportService,
+                      SleepData sleepData,
+                      OverallReportService overallReportService){
         this.envReportService = envReportService;
         this.healthReportService = healthReportService;
         this.sleepData = sleepData;
+        this.overallReportService = overallReportService;
     }
 
     /**
@@ -54,8 +59,7 @@ public class ReportController {
         return healthReportService.getReport(isAwaken);
     }
 
-    @Autowired
-    OverallReportService overallReportService;
+
     @RequestMapping(value = "/getOverallReport",method = RequestMethod.GET)
     public String overallReport(){
         return overallReportService.getOverallReport();

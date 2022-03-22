@@ -45,6 +45,7 @@ public class HealthAdviceService {
      * 分析十秒内的心率平均数据得出建议
      */
     private String heartRateCalculate(int heartRate) {
+
         if(heartRate>SLOW_HR_STAND && heartRate < NORMAL_HR_STAND){
             return "Your heart rate is too slow, " +
                     "and you may experience symptoms of dizziness, fatigue, fatigue, and lethargy. " +
@@ -85,7 +86,7 @@ public class HealthAdviceService {
     private String bmiCalculate(double bmi) {
         if(bmi < SKINNY_STAND){
             return "According to your latest BMI, your BMI is too low, " +
-                    "please pay attention to eat regularly and regularly. " +
+                    "please pay attention to eat regularly. " +
                     "A low BMI can lead to a weakened immune system, " +
                     "sagging stomach due to osteoporosis, gallstones and anemia.";
         }

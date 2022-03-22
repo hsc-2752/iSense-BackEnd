@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HealthAdviceController {
 
-    private HealthAdviceService adviceService;
+     HealthAdviceService adviceService;
     @Autowired
     HealthAdviceController (HealthAdviceService adviceService){
         this.adviceService = adviceService;

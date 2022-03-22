@@ -90,10 +90,6 @@ public class HealthController {
         return healthDataService.getManySleep(count);
     }
 
-
-   // @Autowired
-
-  //  @Autowired
     /**
      * 获取睡眠时间,将深浅睡眠计算出来并存入数据库
      */
