@@ -35,4 +35,13 @@ public interface EmotionMapper {
     @Select("select emotion from arduinodb.emotion_data order by emotionId desc;")
     List<BigDecimal> getAllEmotion();
 
+    /**
+     * 返回最新一条用户输入的数据
+     */
+    @Select("select emotion from arduinodb.emotion_data order by emotionId desc limit 1;")
+    int getNewestEmotion();
+
+
+    //@Select("select * from arduinodb.eeg_data group by eeg order by eegId desc limit 100");
+
 }

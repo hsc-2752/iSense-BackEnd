@@ -11,8 +11,12 @@ import java.util.List;
 @RestController
 public class EVDController {
 
-    @Autowired
+
     EVDataService evDataService;
+    @Autowired
+    EVDController(EVDataService evDataService){
+        this.evDataService = evDataService;
+    }
 
     @RequestMapping(value = "/getEVD",method  = RequestMethod.GET)
     public EnvironmentData evdMapper() {

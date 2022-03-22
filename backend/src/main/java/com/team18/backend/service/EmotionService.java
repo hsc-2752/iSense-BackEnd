@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * Server layer related to emotion
+ * 拿给Agent的句子
  */
 @Service
 public class EmotionService {
@@ -20,13 +21,22 @@ public class EmotionService {
     EmotionMapper emoMapper;
     @Autowired
     RuleModeService ruleModeService;
+
     static final int NATURAL_EMOTION = 5;
     static final int POSITIVE_EMOTION = 7;
 
     private List<BigDecimal> emoList;
 
-    public void storeEmotion(int emotion){
-        emoMapper.storeEmotionByUser(emotion);
+    @ExceptionHandler
+    public boolean storeEmotion(int emotion){
+        try{
+            emoMapper.storeEmotionByUser(emotion);
+        }catch (Exception e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+
     }
 
     public int getEmotionByEmotion(){
@@ -77,4 +87,27 @@ public class EmotionService {
             emoList = emoMapper.getAllEmotion();
         }
     }
+
+    /**
+     * 获取最新一条用户输入的emotion
+     */
+    @ExceptionHandler
+    public int getNewestEmotion(){
+        try{
+            return emoMapper.getNewestEmotion();
+        }catch (DataAccessException e){
+            System.out.println(e);
+            return 404;
+        }
+    }
+
+    /**
+     * 计算一段时间内的eeg信号，以出现频率最多的为输出值
+     */
+    int calculateEEG(){
+
+return 0;
+
+    }
+
 }

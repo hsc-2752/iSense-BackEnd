@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class EVAdviceController {
 
+     EnvAdviceService adviceService;
     @Autowired
-    private EnvAdviceService adviceService;
+    EVAdviceController(EnvAdviceService adviceService){
+        this.adviceService = adviceService;
+    }
 
     /**
      * Obtain heart rate advice from service layer, return it to the front end

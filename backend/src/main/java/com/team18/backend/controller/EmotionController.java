@@ -13,9 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class EmotionController {
 
-    @Autowired
+
     EmotionService emoService;
 
+    @Autowired
+    EmotionController (EmotionService emotionService){
+        this.emoService = emotionService;
+    }
 
     /**
      * 从前端获取用户选择的心情，并存入数据库中
