@@ -20,8 +20,19 @@ public class HealthController {
     /**
      * 注入service层
      */
-    @Autowired
     private HealthDataService healthDataService;
+    private SleepData sleepData;
+    private SleepService sleepService;
+
+
+    @Autowired
+    HealthController(HealthDataService healthDataService
+    ,SleepData sleepData
+    ,SleepService sleepService){
+        this.healthDataService = healthDataService;
+        this.sleepData = sleepData;
+        this.sleepService = sleepService;
+    }
 
     /**
      * Obtain all HR and BOS data from database, return it to
@@ -80,11 +91,9 @@ public class HealthController {
     }
 
 
-    @Autowired
-    private SleepData sleepData;
+   // @Autowired
 
-    @Autowired
-    private SleepService sleepService;
+  //  @Autowired
     /**
      * 获取睡眠时间,将深浅睡眠计算出来并存入数据库
      */

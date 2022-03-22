@@ -16,8 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ReportController {
 
-    @Autowired
+
     private EnvReportService envReportService;
+    private HealthReportService healthReportService;
+    private SleepData sleepData;
+
+    @Autowired
+    ReportController (EnvReportService envReportService, HealthReportService healthReportService, SleepData sleepData){
+        this.envReportService = envReportService;
+        this.healthReportService = healthReportService;
+        this.sleepData = sleepData;
+    }
+
     /**
      * 获取环境报告
      * @return 返回给前端的环境报告
@@ -27,10 +37,8 @@ public class ReportController {
         return envReportService.getReport();
     }
 
-    @Autowired
-    private HealthReportService healthReportService;
-    @Autowired
-    private SleepData sleepData;
+
+
     /**
      * 获得健康报告， 需要传入睡眠的开始和结束时间和是否被吵醒的布尔值
      *

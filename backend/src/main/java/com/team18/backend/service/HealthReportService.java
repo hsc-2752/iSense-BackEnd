@@ -267,7 +267,6 @@ public class HealthReportService {
      * 不正常值占比 max min
      * @return
      */
-    //TODO
     private String findHRAbnormal(){
         int abCounter = 0;
         double abratio;
@@ -298,7 +297,6 @@ public class HealthReportService {
      * max min avg
      * @return
      */
-    //TODO
     private String findBOSAbnormal(){
         String abnormal = "In the past 15 minutes, ";
         double sum = 0, max, min, avg;

@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HealthAdviceController {
-    @Autowired
-    private HealthAdviceService adviceService;
 
+    private HealthAdviceService adviceService;
+    @Autowired
+    HealthAdviceController (HealthAdviceService adviceService){
+        this.adviceService = adviceService;
+    }
     /**
      * 获取有关心率的建议
      * @return heart rate advice
