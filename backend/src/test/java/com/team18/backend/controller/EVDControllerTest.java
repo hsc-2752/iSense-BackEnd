@@ -1,16 +1,14 @@
 package com.team18.backend.controller;
 
 import com.team18.backend.mapper.EVDataMapper;
-import com.team18.backend.pojo.EnvironmentData;
 import com.team18.backend.service.EVDataService;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.AutoConfigureMybatis;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @WebMvcTest(EVDController.class)
 @Import(EVDataService.class)
 @AutoConfigureMybatis
+@AutoConfigureMockMvc
 class EVDControllerTest {
 
 
@@ -40,6 +39,7 @@ class EVDControllerTest {
         MockHttpServletResponse response = this.mvc.perform(MockMvcRequestBuilders.get("/getEVD")
                         .accept(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse();
+        //判断模拟http 请求的状态是否为请求已经成功 即状态码200
         assertEquals(response.getStatus(), HttpStatus.OK.value());
         assertEquals(""
                 ,response.getContentAsString());
@@ -53,8 +53,9 @@ class EVDControllerTest {
                         .param("count","5")
                         .accept(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse();
+        //判断模拟http 请求的状态是否为请求已经成功 即状态码200
         assertEquals(response.getStatus(), HttpStatus.OK.value());
-        assertEquals("[null,null,null,null,null]",response.getContentAsString());
+        assertEquals("[0.0,0.0,0.0,0.0,0.0]",response.getContentAsString());
     }
 
     @Test
@@ -64,8 +65,9 @@ class EVDControllerTest {
                         .param("count","5")
                         .accept(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse();
+        //判断模拟http 请求的状态是否为请求已经成功 即状态码200
         assertEquals(response.getStatus(), HttpStatus.OK.value());
-        assertEquals("[null,null,null,null,null]",response.getContentAsString());
+        assertEquals("[0.0,0.0,0.0,0.0,0.0]",response.getContentAsString());
     }
 
     @Test
@@ -74,8 +76,9 @@ class EVDControllerTest {
                         .param("count","5")
                         .accept(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse();
+        //判断模拟http 请求的状态是否为请求已经成功 即状态码200
         assertEquals(response.getStatus(), HttpStatus.OK.value());
-        assertEquals("[null,null,null,null,null]",response.getContentAsString());
+        assertEquals("[0.0,0.0,0.0,0.0,0.0]",response.getContentAsString());
 
     }
 
@@ -85,8 +88,9 @@ class EVDControllerTest {
                         .param("count","5")
                         .accept(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse();
+        //判断模拟http 请求的状态是否为请求已经成功 即状态码200
         assertEquals(response.getStatus(), HttpStatus.OK.value());
-        assertEquals("[null,null,null,null,null]",response.getContentAsString());
+        assertEquals("[0.0,0.0,0.0,0.0,0.0]",response.getContentAsString());
 
     }
 
@@ -96,8 +100,9 @@ class EVDControllerTest {
                         .param("count","5")
                         .accept(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse();
+        //判断模拟http 请求的状态是否为请求已经成功 即状态码200
         assertEquals(response.getStatus(), HttpStatus.OK.value());
-        assertEquals("[null,null,null,null,null]",response.getContentAsString());
+        assertEquals("[0.0,0.0,0.0,0.0,0.0]",response.getContentAsString());
 
     }
 }
