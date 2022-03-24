@@ -16,8 +16,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,7 +46,6 @@ class EVDControllerTest {
 
     @Test
     void getTemperature() throws Exception {
-        List<Double> list = new ArrayList<>();
         MockHttpServletResponse response = this.mvc.perform(MockMvcRequestBuilders.post("/getTime/tem")
                         .param("count","5")
                         .accept(MediaType.APPLICATION_JSON))
@@ -60,7 +57,6 @@ class EVDControllerTest {
 
     @Test
     void getHumidity() throws Exception {
-        List<Double> list = new ArrayList<>();
         MockHttpServletResponse response = this.mvc.perform(MockMvcRequestBuilders.post("/getTime/hum")
                         .param("count","5")
                         .accept(MediaType.APPLICATION_JSON))
