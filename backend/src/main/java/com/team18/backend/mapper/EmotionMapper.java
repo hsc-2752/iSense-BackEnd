@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -42,6 +43,9 @@ public interface EmotionMapper {
     int getNewestEmotion();
 
 
-    //@Select("select * from arduinodb.eeg_data group by eeg order by eegId desc limit 100");
-
+    /**
+     *
+     */
+    @Select("SELECT emotion FROM arduinodb.emotion_data order by emotionId desc;")
+    List<Integer> getAllEmotionAndIndex();
 }

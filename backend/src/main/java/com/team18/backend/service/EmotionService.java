@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -102,12 +103,11 @@ public class EmotionService {
     }
 
     /**
-     * 计算一段时间内的eeg信号，以出现频率最多的为输出值
+     * 获取所有emotion，返回一个list
      */
-    int calculateEEG(){
+        public List<Integer> getAllEmotion(){
+            return emoMapper.getAllEmotionAndIndex();
+        }
 
-return 0;
-
-    }
 
 }
