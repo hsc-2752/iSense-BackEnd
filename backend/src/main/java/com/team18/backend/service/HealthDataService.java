@@ -3,7 +3,7 @@ package com.team18.backend.service;
 import com.team18.backend.mapper.HealthMapper;
 import com.team18.backend.pojo.CalculatedSleepData;
 import com.team18.backend.pojo.HeartData;
-import com.team18.backend.pojo.HuData;
+import com.team18.backend.pojo.BMIData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -45,7 +45,7 @@ public class HealthDataService {
     /**
      * 获取所有bmi，以一个list返回，其中有bmi和时间
      */
-    public List<HuData> getAllBMI(){
+    public List<BMIData> getAllBMI(){
        return healthMapper.getBMI();
     }
 

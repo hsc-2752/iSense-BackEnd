@@ -2,7 +2,7 @@ package com.team18.backend.mapper;
 
 import com.team18.backend.pojo.CalculatedSleepData;
 import com.team18.backend.pojo.HeartData;
-import com.team18.backend.pojo.HuData;
+import com.team18.backend.pojo.BMIData;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -70,7 +70,7 @@ public interface HealthMapper {
      * 取bmi数据
      */
     @Select("SELECT timeIndex, bmi FROM arduinodb.bmi_data")
-    List<HuData>  getBMI();
+    List<BMIData>  getBMI();
 
     /**
      * 存入睡眠时间

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- *
+ * This class is used to provide health advice
  */
 @Service
 public class HealthAdviceService {

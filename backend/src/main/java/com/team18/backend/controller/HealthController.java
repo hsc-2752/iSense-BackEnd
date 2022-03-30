@@ -2,7 +2,7 @@ package com.team18.backend.controller;
 
 import com.team18.backend.pojo.CalculatedSleepData;
 import com.team18.backend.pojo.HeartData;
-import com.team18.backend.pojo.HuData;
+import com.team18.backend.pojo.BMIData;
 import com.team18.backend.pojo.SleepData;
 import com.team18.backend.service.HealthDataService;
 import com.team18.backend.service.SleepService;
@@ -58,7 +58,7 @@ public class HealthController {
      * 用于画图
      */
     @RequestMapping(value = "/getTime/BMI",method = RequestMethod.GET)
-    public List<HuData> bmiMapper(){
+    public List<BMIData> bmiMapper(){
         return healthDataService.getAllBMI();
     }
 

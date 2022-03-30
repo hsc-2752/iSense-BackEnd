@@ -50,7 +50,7 @@ public class OverallReportService {
     private static final int LOW_HR_STAND = 60;
 
 
-    //TODO eeg 待实现
+
     public String getOverallReport(){
         return getHRReport();
     }

@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- *
+ * This class is used to provide environment advide
  */
 @Service
 public class EnvAdviceService {
