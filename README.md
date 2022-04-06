@@ -43,13 +43,11 @@ Training Data-set: [SEED Dataset (sjtu.edu.cn)](https://bcmi.sjtu.edu.cn/home/se
 
 
 
-#### Connect All Sensors
+#### Connect All Sensors 
 
 ----
 
-Follow the IMAGE//TODO to connect all sensor
-
-
+Follow the  *..\Hardware\Hardware_connect*  to connect all sensor
 
 #### HR & Blood Oxygen Saturation & Air Pollution Data OBTAIN
 
