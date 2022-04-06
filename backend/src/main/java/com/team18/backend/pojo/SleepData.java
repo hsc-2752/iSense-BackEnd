@@ -3,6 +3,9 @@ package com.team18.backend.pojo;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * sleep data component can be autowried
+ */
 @Component
 public class SleepData {
 

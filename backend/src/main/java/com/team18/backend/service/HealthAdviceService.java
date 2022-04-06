@@ -13,17 +13,17 @@ public class HealthAdviceService {
     @Autowired
     private HealthAdviceMapper adviceMapper;
 
-    //心率标准值
+    //Heart rate standard
     private static final int NORMAL_HR_STAND = 60;
     private static final int SLOW_HR_STAND = 45;
     private static final int FAST_HR_STAND = 160;
 
-    //血氧标准值
+    //Blood oxygen standard
     private static final int FULL_BOS_STAND = 100;
     private static final int NORMAL_BOS_STAND = 95;
     private static final int LOW_BOS_STAND = 90;
 
-    //bmi标准值
+    //Bmi values
     private static final double SKINNY_STAND = 18.5;
     private static final double NORMAL_STAND = 24.9;
     private static final double OVERWEIGHT_STAND = 25.0;
@@ -32,8 +32,7 @@ public class HealthAdviceService {
 
 
     /**
-     * 获取心率有关建议
-     * @return
+     * Get heart rate advice
      */
     public String getHRAdvice(){
         int heartRate = adviceMapper.getHRAverageData();
@@ -42,7 +41,7 @@ public class HealthAdviceService {
     }
 
     /**
-     * 分析十秒内的心率平均数据得出建议
+     * Analyze heart rate averages over 10 seconds to make recommendations
      */
     private String heartRateCalculate(int heartRate) {
 
@@ -65,7 +64,7 @@ public class HealthAdviceService {
     }
 
     /**
-     * 获取血氧有关建议
+     * Advice on obtaining blood oxygen
      */
     public String getBOSAdvice(){
         int bos = adviceMapper.getBOSAverageData();
@@ -73,7 +72,7 @@ public class HealthAdviceService {
     }
 
     /**
-     * 获取bmi有关建议
+     * Get advice on BMI
      */
     public String getBMIAdvice(){
         double bmi = adviceMapper.getNewestBMI();
@@ -81,7 +80,7 @@ public class HealthAdviceService {
     }
 
     /**
-     * 对最新的一条bmi进行分析
+     * The latest bmi was analyzed
      */
     private String bmiCalculate(double bmi) {
         if(bmi < SKINNY_STAND){
@@ -118,7 +117,7 @@ public class HealthAdviceService {
     }
 
     /**
-     * 分析十秒内的血氧数据得出建议
+     * Analyze blood oxygen levels over a 10-second period to make recommendations
      */
     private String bloodCalculate(int bos) {
         if(bos <= FULL_BOS_STAND && bos >= NORMAL_BOS_STAND)

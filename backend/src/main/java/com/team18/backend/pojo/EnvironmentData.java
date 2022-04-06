@@ -1,5 +1,8 @@
 package com.team18.backend.pojo;
 
+/**
+ * Environment data component can be qutowried
+ */
 public class EnvironmentData {
     private double temp;
     private double humidity;

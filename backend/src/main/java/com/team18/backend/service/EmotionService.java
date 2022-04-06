@@ -8,12 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * Server layer related to emotion
- * 拿给Agent的句子
+ * This server provides sentence to the agent
  */
 @Service
 public class EmotionService {
@@ -46,7 +45,8 @@ public class EmotionService {
 
 
     /**
-     * 首先分析用户记录的情绪是否大致为递增或递减，其次分析平均值是否处于某个区间内再给出相应的advice
+     * Firstly, it analyzes whether the recorded emotions of users are generally increasing or decreasing.
+     * Secondly, it analyzes whether the average is within a certain range and then gives corresponding advice
      */
     public String getEmotionAdvice(){
         String emoAdvice = "";
@@ -55,7 +55,8 @@ public class EmotionService {
         {
             return "you haven't store your emotion yet.";
         }
-        //因为取出来的list是从最新到最后，所以数据为Descend即心情数据上升,ascending即心情数据下降
+        //Since the extracted list is from the latest to the last, the data is Descend,
+        // indicating that mood data ascending, and ascending, indicating that mood data descending
         if (ruleModeService.isDescending(emoList)) {
             emoAdvice += "According to your recent record of mood, you seem to be in a better mood." +
                     " Did anything good happen?";
@@ -77,7 +78,7 @@ public class EmotionService {
     }
 
     /**
-     * 取前十个进行分析，如果不满十个，则取全部数据
+     * Take the first ten for analysis, if less than ten, take all the data
      */
     @ExceptionHandler
     private void setEmoList(){
@@ -90,7 +91,7 @@ public class EmotionService {
     }
 
     /**
-     * 获取最新一条用户输入的emotion
+     * Gets the emotion of the last user input
      */
     @ExceptionHandler
     public int getNewestEmotion(){
@@ -103,7 +104,7 @@ public class EmotionService {
     }
 
     /**
-     * 获取所有emotion，返回一个list
+     * Get all emotion and return a list
      */
         public List<Integer> getAllEmotion(){
             return emoMapper.getAllEmotionAndIndex();

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *
+ * This controller controls all report connection
  */
 @RestController
 public class ReportController {
@@ -34,8 +34,8 @@ public class ReportController {
     }
 
     /**
-     * 获取环境报告
-     * @return 返回给前端的环境报告
+     * gain environment report
+     * @return return report to client
      */
     @RequestMapping(value = "/getEVReport",method = RequestMethod.GET)
     public String environmentReport(){
@@ -45,10 +45,11 @@ public class ReportController {
 
 
     /**
-     * 获得健康报告， 需要传入睡眠的开始和结束时间和是否被吵醒的布尔值
+     * To get a health report, you need to pass in a Boolean value for the start and end times of sleep
+     * and whether or not you were woken up
      *
-     * @return 评估今天的睡眠，将其传入睡眠报告service
-     * 向前端返回得到的睡眠报告
+     * @return Assess your sleep for the day and pass it into the sleep reporting service
+     * The anteriorly returned sleep report is obtained
      */
     @RequestMapping(value = "/getHealReport",method = RequestMethod.POST)
     public String healthReport(@RequestParam("startTime")String startTime,
@@ -60,6 +61,10 @@ public class ReportController {
     }
 
 
+    /**
+     * gain overall report
+     * @return overall report
+     */
     @RequestMapping(value = "/getOverallReport",method = RequestMethod.GET)
     public String overallReport(){
         return overallReportService.getOverallReport();

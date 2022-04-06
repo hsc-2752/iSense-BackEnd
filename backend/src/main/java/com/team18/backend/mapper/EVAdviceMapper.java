@@ -4,13 +4,13 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 /**
- * 只用于advice的对数据库的操作
+ * Operations on databases for advice only
  */
 @Repository
 public interface EVAdviceMapper {
 
     /**
-     * 取前十秒的数据（温度）的平均值
+     * Take the average of the data (temperature) in the last ten seconds
      */
     @Select("select avg(temp) from arduinodb.nano_data " +
             "where NANOid between " +
@@ -20,7 +20,7 @@ public interface EVAdviceMapper {
     double getTempAdviceData();
 
     /**
-     * 取前十秒的数据（湿度）的平均值
+     * Take the average of the previous 10 seconds of data (humidity)
      */
     @Select("select avg(humidity) from arduinodb.nano_data " +
             "where NANOid between " +
@@ -30,7 +30,7 @@ public interface EVAdviceMapper {
     double getHumAdviceData();
 
     /**
-     * 取前十秒的数据（气压）的平均值
+     * Take the average of the data(pressure) for the last ten seconds
      */
     @Select("select avg(pressure) from arduinodb.nano_data " +
             "where NANOid between " +
@@ -40,7 +40,7 @@ public interface EVAdviceMapper {
     double getPressureAdviceData();
 
     /**
-     * 取前十秒的数据（噪音）的平均值
+     * Take the average of the previous 10 seconds of data (noise)
      */
     @Select("select avg(voice) from arduinodb.nano_data " +
             "where NANOid between " +
@@ -50,7 +50,7 @@ public interface EVAdviceMapper {
     double getNoiseAdviceData();
 
     /**
-     * 取前十秒的数据（亮度）的平均值
+     * Take the average of the previous 10 seconds of data (brightness)
      */
     @Select("select avg(brightness) from arduinodb.nano_data " +
             "where NANOid between " +
@@ -60,7 +60,7 @@ public interface EVAdviceMapper {
     double getBrightAdviceData();
 
     /**
-     * 取前十秒的数据（空气质量）的平均值
+     * Take the average of the previous 10 seconds of data (air quality)
      */
     @Select("select avg(HCHO) from arduinodb.mega_data " +
             "where MEGAid between " +

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- *This class is used to analysis data
+ *This class is rule mode service implementation
  */
 @Service("ruleModeService")
 public class RuleModeServiceImpl implements RuleModeService{

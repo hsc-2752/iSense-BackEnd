@@ -13,12 +13,15 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This controller controls controls all connection about health data.
+ */
 @RestController
 public class HealthController {
 
 
     /**
-     * 注入service层
+     * autowried to service
      */
     private HealthDataService healthDataService;
     private SleepData sleepData;
@@ -43,10 +46,10 @@ public class HealthController {
     }
 
     /**
-     * 计算获得bmi
-     * @param weight 前端传来的体重
-     * @param height 前端传来的身高
-     * @return 获得的bmi
+     * calculate BMI
+     * @param weight weight from client
+     * @param height height from client
+     * @return BMI value
      */
     @RequestMapping(value = "/getHealthData/assignBody",method = RequestMethod.POST)
     public double assignBody(@RequestParam("weight") double weight,
@@ -54,8 +57,8 @@ public class HealthController {
      return healthDataService.getAndStoreBMI(weight,height);
     }
     /**
-     * 获取所有bmi(数据类型为List，存放了bmi以及对应时间)
-     * 用于画图
+     * Retrieve all BMIs (data type: List, stored BMI and corresponding time)
+     * For drawing chart
      */
     @RequestMapping(value = "/getTime/BMI",method = RequestMethod.GET)
     public List<BMIData> bmiMapper(){
@@ -63,9 +66,9 @@ public class HealthController {
     }
 
     /**
-     * 用于画图的数据获取，前端返回一个横坐标个数，
-     * 根据横坐标个数决定获取几个十五分钟的平均值。
-     * (血氧)
+     * For drawing data acquisition, the front end returns a number of abscissa,
+     * Take a number of 15-minute averages based on the number of horizontal coordinates.
+     * (Blood oxygen)
      */
     @RequestMapping(value =  "/getTime/bos",method = RequestMethod.POST)
     public List<Double> getBloodOxygen(@RequestParam("count")int count) {
@@ -73,7 +76,7 @@ public class HealthController {
     }
 
     /**
-     * (心率),以及获取个数
+     * (heart rate),and number of HR client needs
      */
     @RequestMapping(value =  "/getTime/hr",method = RequestMethod.POST)
     public List<Double> getHeartRate(@RequestParam("count")int count){
@@ -81,9 +84,9 @@ public class HealthController {
     }
 
     /**
-     * 用于画图的数据获取，前端返回一个横坐标个数，
-     * 根据横坐标个数决定获取几个十五分钟的平均值。
-     * (睡眠时间)
+     * For drawing data acquisition, the front end returns a number of abscissa,
+     * Take a number of 15-minute averages based on the number of horizontal coordinates.
+     * (sleep time)
      */
     @RequestMapping(value = "/getTime/sleep", method = RequestMethod.POST)
     public List<CalculatedSleepData> getSleep(@RequestParam("count")int count){
@@ -91,7 +94,7 @@ public class HealthController {
     }
 
     /**
-     * 获取睡眠时间,将深浅睡眠计算出来并存入数据库
+     * Get sleep time, calculate the depth of sleep and store in the database
      */
     @RequestMapping(value = "/getTime/sleepTime",method = RequestMethod.POST)
     public Map<String,Double> getSleepTime(@RequestParam("startTime")String startTime,

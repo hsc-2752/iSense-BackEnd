@@ -11,12 +11,13 @@ import java.util.List;
 
 
 /**
- * 用于获得健康数据的报告，报告包括综合前十五分钟的健康数据进行分析，睡眠报告，
- * 以及每个不同数据类型的分析，包括不适宜数据占比，最大值，最小值，平均值。
+ * Reports used to obtain health data, including analysis combining the previous 15 minutes of health data, sleep reports,
+ * And analysis of each different data type, including proportion of inappropriate data, maximum value, minimum value, average value.
  */
 @Service
 @Transactional
 public class HealthReportService {
+    //Standard value
     public static final int LOW_STD = 60;
     public static final int SUB_LOW_STD = 70;
     public static final int HIGH_STAD = 90;
@@ -28,11 +29,11 @@ public class HealthReportService {
     private HealthMapper healthMapper;
 
     /**
-     * 十五分钟内的心率
+     * Heart rate for the last 15 minutes
      */
     private List<Double> heartRateList;
     /**
-     * 十五分钟内的血氧
+     * Blood oxygen for 15 minutes
      */
     private List<Double> bloodOxygenList;
 
@@ -45,7 +46,7 @@ public class HealthReportService {
 
 
     public String getReport(boolean isAwaken){
-        //初始化
+        //initialize
         this.heartRateList = healthMapper.findReportHR();
         this.bloodOxygenList = healthMapper.findReportBOS();
         this.sleep = sleepService.evaluate();
@@ -76,7 +77,7 @@ public class HealthReportService {
     }
 
     /**
-     * 生成睡眠报告
+     * generate sleep report
      */
     private void sleepReport(){
         // brightness, noise, air quality, temperature
@@ -266,9 +267,9 @@ public class HealthReportService {
     }
 
     /**
-     * 对十五分钟内的心率数据进行分析
-     * 不正常值占比 max min
-     * @return
+     * Heart rate data were analyzed over a 15-minute period
+     * report consist of ration of abnormal data, maximum value, minimum value
+     * @return Heart rate report
      */
     private String findHRAbnormal(){
         int abCounter = 0;
@@ -301,9 +302,9 @@ public class HealthReportService {
     }
 
     /**
-     * 对十五分钟的血氧数据进行分析
-     * max min avg
-     * @return
+     * Blood oxygen was analyzed at 15 minutes
+     * report consist of ration of abnormal data, maximum value, minimum value
+     * @return BOS report
      */
     private String findBOSAbnormal(){
         String abnormal = "In the past 15 minutes, ";

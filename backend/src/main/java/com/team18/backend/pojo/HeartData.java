@@ -1,7 +1,7 @@
 package com.team18.backend.pojo;
 
 /**
- * This class is used for
+ * Primary health data component can be autowried
  */
 public class HeartData {
     private double HeartRate;
