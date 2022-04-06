@@ -180,8 +180,8 @@ public class HealthReportService {
 
 
     private int bosCondition(Double bos){
-
-        int condition = -5; //-5 is used in case the if statements are skipped
+//-5 is used in case the if statements are skipped
+        int condition = -5;
         if (bos <= O_LACK){
             condition = -50;
         }

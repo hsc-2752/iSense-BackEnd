@@ -11,9 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A report used to obtain environmental data,
- * including the environmental score based on the analysis of the previous three hours of environmental data，
- * And analysis of each different data type, including proportion of inappropriate data, maximum, minimum, and average
+ * 用于获得环境数据的报告，报告包括综合前三小时的环境数据进行分析得到的环境分，
+ * 以及每个不同数据类型的分析，包括不适宜数据占比，最大值，最小值，平均值
  */
 @Service
 public class EnvReportService {
@@ -40,29 +39,29 @@ public class EnvReportService {
     @Autowired
     private RuleModeService ruleService;
     /**
-     * Environmental data within the last three hours
+     * 最新三小时内的环境数据
      */
     private List<EnvironmentData> list;
 
-    /**
-     * Analyze environmental data during the three-hour period
-     * @return Environment advice
+       /**
+     * 分析三个小时期间的环境数据
+     * @return 环境报告
      */
     public String getReport(){
         this.list = evDataMapper.reportData();
         String report = "";
         report = report + generateOverall();
-        //temperature analysis
+        //温度分析
         report = report + findTempAbnormal();
-        //humidity analysis
+        //湿度分析
         report += findHumAbnormal();
-        //air quality analysis
+        //空气质量分析
         report += findAirAbnormal();
-        //illumination analysis
+        //光亮分析
         report += findBrightAbnormal();
-        //decibel analysis
+        //噪音分析
         report += findNoiseAbnormal();
-        //pressure analysis
+        //气压分析
         report += findPressAbnormal();
         report = report +"All other conditions are normal!";
         return report;
@@ -140,7 +139,7 @@ public class EnvReportService {
         double bright = e.getBrightness();
         int condition;
         if (bright > BRIGHT_STAND1){
-            //if too bright
+            //如果太亮
             if(bright > 2*BRIGHT_STAND1){
                 condition = 2;
             }
@@ -150,7 +149,7 @@ public class EnvReportService {
 
         }
         else if (bright < BRIGHT_STAND2){
-            //if too dark
+            //如果太暗
             if(bright < (BRIGHT_STAND2*0.5)){
                 condition = 2;
             }
@@ -295,8 +294,8 @@ public class EnvReportService {
         avg /= ratio;
         ratio = abnormal_mount / ratio;
 
-        //data analysis
-        //if pressure is too high
+        //数据分析
+        //如果气压过高
         if (ruleService.isAvgHigher(PRESSURE_STAND1,preList)) {
             abnormal += "Data shows that your recent average room pressure is higher than standard atmospheric pressure. ";
         }
@@ -309,8 +308,8 @@ public class EnvReportService {
     }
 
     /**
-     * Analyze the environmental decibel data
-     * @return analysis result
+     * 对环境分贝数据进行分析
+     * @return 分析结果
      */
     private String findNoiseAbnormal() {
         String abnormal = "";
@@ -349,7 +348,7 @@ public class EnvReportService {
             }
         }
         abnormal += "According to statistics of noisy data, ";
-        //Report the proportion of noise
+        //报告嘈杂的占比
         if(abnormal_amount1>0)
         {
             abnormal+="it's a little bit noisy about "+(abnormal_amount1/ratio)+" percent of the time. ";
@@ -409,7 +408,8 @@ public class EnvReportService {
     }
 
     /**
-     * Analyze air data
+     * 对空气数据进行分析
+     * @return
      */
     private String findAirAbnormal() {
         String abnormal = "";
@@ -427,12 +427,12 @@ public class EnvReportService {
                 max = Math.max(max, current);
                 min = Math.min(min, current);
         }
-            //Number of general air quality data
+            //空气质量一般的数据个数
             if(current > AIR_QUALITY_STAND1 && current<AIR_QUALITY_STAND2)
             {
             abnormal_amount1 ++;
             }
-            //The number of people with very poor air quality
+            //空气质量很差的个数
             else if(current>=AIR_QUALITY_STAND2){
                 abnormal_amount2++;
             }
@@ -440,25 +440,25 @@ public class EnvReportService {
             avg+=current;
         }
     avg /= ratio;
-        //If the average air quality is greater than 35 and less than 45
+        //如果空气质量平均大于35小于45
         if(ruleService.isAvgHigher(AIR_QUALITY_STAND1,airList) && ruleService.isAvgLower(AIR_QUALITY_STAND2,airList))
             abnormal+="The data showed that the average air quality in the first three hours was in the normal range. " +
                     "However, this means air indoor is not very fresh. ";
-        //If the average air quality is greater than 45
+        //如果空气质量平均大于45
         else if(ruleService.isAvgHigher(AIR_QUALITY_STAND2,airList))
             abnormal+="The data showed that the average air quality in the first three hours was in the worse range. " +
                     "This means you have poor indoor air. ";
         else
-            //If the air quality is below 35
+            //如果空气质量低于35
             abnormal += "The average air quality data for the first three hours shows that air in your room is fresh.";
 
         abnormal += "According to statistic of air quality data, ";
-
+        //百分比
         if(abnormal_amount1>0)
             abnormal+="The percentage of general quality air data to the total air quality data is: "+ (abnormal_amount1/ratio)+" ";
         if (abnormal_amount2>0)
             abnormal+="The percentage of worse data to the whole air quality data is :"+(abnormal_amount2/ratio)+" ";
-        //Maximum, minimum, average
+        //最大值，最小值，平均值
         abnormal +="In the worst case of all air quality data, the API(Air Pollution Index) reaches:"+max+". " +
                 "In the best case of all air quality data, the lowest API value is:"+min+". " +
                 "Overall, the average air pollution index is:" +avg+". ";
@@ -466,8 +466,8 @@ public class EnvReportService {
     }
 
     /**
-     * Analyze the humidity data
-     * @return analysis
+     * 对湿度数据进行分析
+     * @return 分析结果
      */
     private String findHumAbnormal() {
         String abnormal = "";
@@ -485,18 +485,18 @@ public class EnvReportService {
                 max = Math.max(max, current);
                 min = Math.min(min, current);
             }
-            //temperature is low
+            //湿度较低
             if(current <HUM_STAND2)
             {
-                //humidity is too low
+                //湿度过低
                 if(current < HUM_STAND1)
                     abnormal_amount1++;
                 else
                     abnormal_amount2 ++;
             }
-            //humidity is quite high
+            //湿度较高
             else if(current > HUM_STAND3)
-                //humidity is too high
+                //湿度过高
                 if(current > HUM_STAND4)
                     abnormal_amount4++;
                 else
@@ -506,20 +506,20 @@ public class EnvReportService {
             avg+=current;
         }
         avg /= ratio;
-        //if humidity is quite low
+        //如果湿度较低
         if(ruleService.isAvgLower(HUM_STAND2,humList) && ruleService.isAvgHigher(HUM_STAND1,humList))
             abnormal+="Ambient humidity data for the first three hours indicate low humidity in your room.(Less than "+HUM_STAND2+" but higher than "+HUM_STAND1 +") ";
-        //if humidity is too low
+        //如果湿度很低
         else if(ruleService.isAvgLower(HUM_STAND1,humList))
             abnormal+="The ambient humidity data for the last three hours indicate that your indoor humidity is very low.(Less than "+HUM_STAND1+" on average) ";
-        //if humidity is quite high
+        //如果湿度较高
         else if(ruleService.isAvgLower(HUM_STAND4,humList)&& ruleService.isAvgHigher(HUM_STAND3,humList))
             abnormal += "The ambient humidity data for the last three hours indicate that the humidity in your room is a little high. The average is above "+HUM_STAND3+" but below "+HUM_STAND4+". ";
-        //if humidity is too high
+        //如果湿度很高
         else if(ruleService.isAvgHigher(HUM_STAND4,humList))
             abnormal+="The ambient humidity data for the last three hours indicate that the humidity in your room is too high to living. The average is higher than "+HUM_STAND4+". ";
         abnormal += "According to statistic of humidity, ";
-        //percentage
+        //百分比
         if(abnormal_amount1>0)
             abnormal+="In all environmental humidity data, the data showing the environment is very dry accounted for "+(abnormal_amount1/ratio)+"% of the total. ";
         if (abnormal_amount2>0)
@@ -528,6 +528,7 @@ public class EnvReportService {
             abnormal+="The percentage of all ambient humidity data showing that the environment is partly wet is "+(abnormal_amount3/ratio)+"%. ";
         if(abnormal_amount4>0)
             abnormal+="In the environmental humidity data, the data showing that the environment is damp accounts for "+(abnormal_amount4/ratio)+"% of the total data. ";
+        //最高值最低值平均值
         abnormal +="Among all indoor humidity data, the maximum value in the wettest case is:"+max+" , and the minimum value in the driest case is:"+min+". In short, the average humidity of the humidity data is:"+avg+". ";
 
 

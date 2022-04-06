@@ -136,7 +136,6 @@ public class OverallReportService {
                            "You can even have a tachycardia.";
                }
                     hrReport+=" Aside from environmental causes, it could also be because you stayed up late last night or didn't get enough rest.";
-
            }
         }
         //Heart rate continues to drop
