@@ -29,7 +29,7 @@ Training Data-set: [SEED Dataset (sjtu.edu.cn)](https://bcmi.sjtu.edu.cn/home/se
 * Software: ***MySQL***, ***MySQL*** ***Workbench***(Database Visualization)
 * Setup: 
   * Create an account of ***MySQL***
-  * Import database files 
+  * Import database files ..\Hardware\database_file\iSense.sql
 
 
 
