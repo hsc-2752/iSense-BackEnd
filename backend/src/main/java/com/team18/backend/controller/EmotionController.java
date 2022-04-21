@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import java.util.List;
+
 /**
  * Controller relate to emotion part
  */
@@ -14,15 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class EmotionController {
 
 
-    EmotionService emoService;
 
+    EmotionService emoService;
     @Autowired
     EmotionController (EmotionService emotionService){
         this.emoService = emotionService;
     }
 
     /**
-     * 从前端获取用户选择的心情，并存入数据库中
+     * The mood selected by the user is obtained from the front end and stored in the database
      */
     @RequestMapping(value = "/emotion/storeEmotion",method = RequestMethod.POST)
     public void storeEmotion(@RequestParam("emotion") int emotion){
@@ -30,7 +33,7 @@ public class EmotionController {
     }
 
     /**
-     * 返回最新的EEG识别人情绪的结果
+     * Returns the latest EEG recognition of human emotions
      */
     @RequestMapping(value = "/emotion/getEEGEmotion", method = RequestMethod.GET)
     public int getEEGEmotion(){
@@ -38,12 +41,19 @@ public class EmotionController {
     }
 
     /**
-     * 返回对近期用户输入的心情分析
+     * Returns a mood analysis of recent user input
      */
     @RequestMapping(value = "/emotion/getEmoAdvice",method = RequestMethod.GET)
     public String getEmoAdvice(){
         return emoService.getEmotionAdvice();
     }
 
+    /**
+     * return emotion
+     */
+    @RequestMapping(value = "/emotion/getEmotion",method = RequestMethod.GET)
+    public List<Integer> getEmotion(){
+        return emoService.getAllEmotion();
+    }
 
 }

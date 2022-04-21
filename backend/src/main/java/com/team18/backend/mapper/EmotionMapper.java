@@ -8,40 +8,46 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * This mapper contains all sql statement to operate emotion data
+ */
 @Repository
 public interface EmotionMapper {
 
     /**
-     * 获取最新的eeg识别的人类情绪
+     * Get the latest EEG recognition of human emotions
      */
     @Select("select eeg from arduinodb.eeg_data order by eegId desc limit 1;")
     int getEmotionByEEG();
 
     /**
-     * 存放用户输入的情绪
+     * Store user input emotions
      */
     @Insert("insert into arduinodb.emotion_data (emotion) value (#{emotion});")
     void storeEmotionByUser(@Param("emotion") int emotion);
 
     /**
-     * 返回前十条用户储存的心情
+     * Returns the top ten stored moods of the user
      */
     @Select("select emotion from arduinodb.emotion_data order by emotionId desc limit 10;")
     List<BigDecimal> getEmotionList();
 
     /**
-     * 返回用户所有的心情数据
+     * Returns all of the user's mood data
      */
     @Select("select emotion from arduinodb.emotion_data order by emotionId desc;")
     List<BigDecimal> getAllEmotion();
 
     /**
-     * 返回最新一条用户输入的数据
+     * Returns the latest user input
      */
     @Select("select emotion from arduinodb.emotion_data order by emotionId desc limit 1;")
     int getNewestEmotion();
 
 
-    //@Select("select * from arduinodb.eeg_data group by eeg order by eegId desc limit 100");
-
+    /**
+     * return all emotion data
+     */
+    @Select("SELECT emotion FROM arduinodb.emotion_data order by emotionId desc;")
+    List<Integer> getAllEmotionAndIndex();
 }

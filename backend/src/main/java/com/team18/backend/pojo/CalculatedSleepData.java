@@ -3,7 +3,7 @@ package com.team18.backend.pojo;
 import org.springframework.stereotype.Component;
 
 /**
- * 用于返回画图的数据
+ * Sleep data component can be autowried
  */
 @Component
 public class CalculatedSleepData {

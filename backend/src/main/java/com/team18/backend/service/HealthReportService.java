@@ -11,12 +11,13 @@ import java.util.List;
 
 
 /**
- * 用于获得健康数据的报告，报告包括综合前十五分钟的健康数据进行分析，睡眠报告，
- * 以及每个不同数据类型的分析，包括不适宜数据占比，最大值，最小值，平均值。
+ * Reports used to obtain health data, including analysis combining the previous 15 minutes of health data, sleep reports,
+ * And analysis of each different data type, including proportion of inappropriate data, maximum value, minimum value, average value.
  */
 @Service
 @Transactional
 public class HealthReportService {
+    //Standard value
     public static final int LOW_STD = 60;
     public static final int SUB_LOW_STD = 70;
     public static final int HIGH_STAD = 90;
@@ -28,11 +29,11 @@ public class HealthReportService {
     private HealthMapper healthMapper;
 
     /**
-     * 十五分钟内的心率
+     * Heart rate for the last 15 minutes
      */
     private List<Double> heartRateList;
     /**
-     * 十五分钟内的血氧
+     * Blood oxygen for 15 minutes
      */
     private List<Double> bloodOxygenList;
 
@@ -45,10 +46,13 @@ public class HealthReportService {
 
 
     public String getReport(boolean isAwaken){
-        //初始化
+        //initialize
         this.heartRateList = healthMapper.findReportHR();
         this.bloodOxygenList = healthMapper.findReportBOS();
         this.sleep = sleepService.evaluate();
+        if(sleep == null){
+            sleep = "0000";
+        }
         this.isAwaken = isAwaken;
          report = "";
         report = report + generateOverall();
@@ -73,7 +77,7 @@ public class HealthReportService {
     }
 
     /**
-     * 生成睡眠报告
+     * generate sleep report
      */
     private void sleepReport(){
         // brightness, noise, air quality, temperature
@@ -145,7 +149,7 @@ public class HealthReportService {
                     report = report + "There's a lot of reasons that one might woke up suddenly. Stress is one of them. If that's the case for you, maybe try do some exercise or listen to some music before sleep. However, if you wake up suddenly for several days in a row, please seek medical attention!";
                     break;
                 default:
-                    System.out.println("not a valid sleep condition");
+                   report+=" Sleep data error";
             }
         }
 
@@ -176,8 +180,8 @@ public class HealthReportService {
 
 
     private int bosCondition(Double bos){
-
-        int condition = -5; //-5 is used in case the if statements are skipped
+//-5 is used in case the if statements are skipped
+        int condition = -5;
         if (bos <= O_LACK){
             condition = -50;
         }
@@ -263,9 +267,9 @@ public class HealthReportService {
     }
 
     /**
-     * 对十五分钟内的心率数据进行分析
-     * 不正常值占比 max min
-     * @return
+     * Heart rate data were analyzed over a 15-minute period
+     * report consist of ration of abnormal data, maximum value, minimum value
+     * @return Heart rate report
      */
     private String findHRAbnormal(){
         int abCounter = 0;
@@ -278,24 +282,29 @@ public class HealthReportService {
                 abCounter++;
         }
         Collections.sort(heartRateList);
-        max = heartRateList.get(0);
-        min = heartRateList.get(heartRateList.size()-1);
-        abratio = abCounter/(double)heartRateList.size();
-        if (abratio > rartioErr){
-            abnormal += "if you are not exercising, " +
-                    "your abnormal heart-rate proportion has exceeded 5%, and your " +
-                    "maximum heart rate and minimum heart rate are: "+max+" and "+min;
-        }else{
-            abnormal += "your heart-rate was in a nonmal state," +
-                    " and your maximum heart rate and minimum heart rate are: "+max+" and "+min;
+        try{
+            max = heartRateList.get(0);
+            min = heartRateList.get(heartRateList.size()-1);
+            abratio = abCounter/(double)heartRateList.size();
+            if (abratio > rartioErr){
+                abnormal += "if you are not exercising, " +
+                        "your abnormal heart-rate proportion has exceeded 5%, and your " +
+                        "maximum heart rate and minimum heart rate are: "+max+" and "+min;
+            }else{
+                abnormal += "your heart-rate was in a nonmal state," +
+                        " and your maximum heart rate and minimum heart rate are: "+max+" and "+min;
+            }
+        } catch (Exception e){
+            abnormal+=" HR data Error";
         }
+
         return abnormal;
     }
 
     /**
-     * 对十五分钟的血氧数据进行分析
-     * max min avg
-     * @return
+     * Blood oxygen was analyzed at 15 minutes
+     * report consist of ration of abnormal data, maximum value, minimum value
+     * @return BOS report
      */
     private String findBOSAbnormal(){
         String abnormal = "In the past 15 minutes, ";
@@ -304,14 +313,19 @@ public class HealthReportService {
             sum += bos;
         }
         Collections.sort(bloodOxygenList);
-        max = bloodOxygenList.get(0);
-        min = bloodOxygenList.get(bloodOxygenList.size()-1);
-        avg = sum/bloodOxygenList.size();
-        if (avg > 0.9377){
-            abnormal += "your blood oxygen saturation is very normal, with maximum and minimum value: " + max + ", " + min;
-        }else{
-            abnormal += "your general blood oxygen saturation was abnormal, with maximum and minimum value: " + max + ", " + min;
+        try{
+            max = bloodOxygenList.get(0);
+            min = bloodOxygenList.get(bloodOxygenList.size()-1);
+            avg = sum/bloodOxygenList.size();
+            if (avg > 0.9377){
+                abnormal += "your blood oxygen saturation is very normal, with maximum and minimum value: " + max + ", " + min;
+            }else{
+                abnormal += "your general blood oxygen saturation was abnormal, with maximum and minimum value: " + max + ", " + min;
+            }
+        }catch (Exception e){
+            abnormal += "BOS data error";
         }
+
         return abnormal;
     }
 

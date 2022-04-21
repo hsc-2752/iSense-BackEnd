@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- *
+ *This class is rule mode service implementation
  */
 @Service("ruleModeService")
 public class RuleModeServiceImpl implements RuleModeService{
@@ -73,7 +73,8 @@ public class RuleModeServiceImpl implements RuleModeService{
         if (Objects.isNull(ruleRestrictions) || CollectionUtil.isEmpty(list)) {
             return false;
         }
-        return CompareUtil.compare(list.stream().min(Comparable::compareTo).get(), Convert.toBigDecimal(ruleRestrictions)) > 0;
+        return CompareUtil.compare(list.stream().min(Comparable::compareTo).get()
+                , Convert.toBigDecimal(ruleRestrictions)) > 0;
     }
 
     @Override
@@ -81,7 +82,8 @@ public class RuleModeServiceImpl implements RuleModeService{
         if (Objects.isNull(ruleRestrictions) || CollectionUtil.isEmpty(list)) {
             return false;
         }
-        return CompareUtil.compare(list.stream().max(Comparable::compareTo).get(), Convert.toBigDecimal(ruleRestrictions)) < 0;
+        return CompareUtil.compare(list.stream().max(Comparable::compareTo).get()
+                , Convert.toBigDecimal(ruleRestrictions)) < 0;
     }
 
     @Override
@@ -89,7 +91,10 @@ public class RuleModeServiceImpl implements RuleModeService{
         if(Objects.isNull(list) || Objects.isNull(differ)){
             return false;
         }
-        return CompareUtil.compare(list.stream().max(Comparable::compareTo).get(),list.stream().min(Comparable::compareTo).get())>differ;
+        return list.stream().max(Comparable::compareTo).get()
+                .subtract(list.stream().min(Comparable::compareTo).get())
+                .compareTo(BigDecimal.valueOf(differ))
+                ==0;
     }
 
     @Override
@@ -114,6 +119,6 @@ public class RuleModeServiceImpl implements RuleModeService{
         for (BigDecimal number : list){
             sum = sum.add(number);
         }
-        return CompareUtil.compare(sum.divide(BigDecimal.valueOf(list.size())),Convert.toBigDecimal(ruleRestrictions))>0;
+        return CompareUtil.compare(sum.divide(BigDecimal.valueOf(list.size())),Convert.toBigDecimal(ruleRestrictions))<0;
     }
 }

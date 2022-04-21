@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+/**
+ * This controller controls all connection about environment data.
+ */
 @RestController
 public class EVDController {
 
@@ -23,35 +25,35 @@ public class EVDController {
         return evDataService.getNewestData();
     }
     /**
-     * 获取前端发送的时间(温度)
+     * gain a list of temperature data
      */
     @RequestMapping(value =  "/getTime/tem",method = RequestMethod.POST)
     public List<Double> getTemperature(@RequestParam("count")int  count){
         return evDataService.getManyAvgTemp(count);
     }
     /**
-     * 获取前端发送的时间(湿度)
+     * gain a list of humidity data
      */
     @RequestMapping(value =  "/getTime/hum",method = RequestMethod.POST)
     public List<Double> getHumidity(@RequestParam("count")int count){
         return evDataService.getManyAvgHum(count);
     }
     /**
-     * 获取前端发送的时间(空气质量)
+     * gain a list of air quality data
      */
     @RequestMapping(value =  "/getTime/airQuality",method = RequestMethod.POST)
     public List<Double> getAirQuality(@RequestParam("count")int count){
         return evDataService.getManyAvgAQ(count);
     }
     /**
-     * 获取前端发送的时间(光照)
+     * gain a list of illumination data
      */
     @RequestMapping(value =  "/getTime/brightness",method = RequestMethod.POST)
     public List<Double> getBrightness(@RequestParam("count")int count){
         return evDataService.getManyAvgBright(count);
     }
     /**
-     * 获取前端发送的时间(噪音)
+     * gain a list of decibel data
      */
     @RequestMapping(value =  "/getTime/noise",method = RequestMethod.POST)
     public List<Double> getNoiseLevel(@RequestParam("count")int count){

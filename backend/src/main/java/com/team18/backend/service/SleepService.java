@@ -17,7 +17,7 @@ import java.util.Map;
 
 
 /**
- * 计算深浅睡眠以及睡眠质量
+ * Calculate the depth and quality of sleep
  */
 @Service
 public class SleepService {
@@ -26,8 +26,8 @@ public class SleepService {
     private String airQuality;
     private String temperature;
 
-//TODO 修改这些标准值
-    static final double STANDARD_LIGHT = 10;
+    //Environment stand value during sleeping
+    static final double STANDARD_LIGHT = 100;
     static final double STANDARD_NOISE = 30;
     static final double  STANDARD_AQ = 30;
     static final double  STANDARD_TEMP1 = 15;
@@ -45,7 +45,7 @@ public class SleepService {
     }
 
     /**
-     * 计算深浅睡眠时间，得到当前时间,调用mapper存入数据库
+     * Calculate the depth of sleep time, get the current time, call mapper into the database
      */
     @ExceptionHandler
     public Map<String,Double> calculateTwoKindsSleepTime() throws ParseException {
@@ -73,8 +73,8 @@ public class SleepService {
 
 
     /**
-     * 根据睡眠期间环境中温度，噪声，光照，空气质量和用户输入的是否有醒来
-     * 来对睡眠时环境各项因素指标做评估
+     * Based on ambient temperature, noise, light, air quality and user input during sleep whether there is a wake up
+     * To assess various factors in the sleep environment
      */
     @Autowired
     private EVDataService evDataService;
@@ -102,7 +102,7 @@ public class SleepService {
     }
 
     /**
-     * 计算总睡眠时间
+     * Calculate total sleep time
      */
     private long calTotalTime() throws ParseException {
         SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");

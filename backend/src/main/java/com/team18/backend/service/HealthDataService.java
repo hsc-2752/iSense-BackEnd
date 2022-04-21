@@ -3,7 +3,7 @@ package com.team18.backend.service;
 import com.team18.backend.mapper.HealthMapper;
 import com.team18.backend.pojo.CalculatedSleepData;
 import com.team18.backend.pojo.HeartData;
-import com.team18.backend.pojo.HuData;
+import com.team18.backend.pojo.BMIData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
+ * This service is used to analysis
  */
 @Service
 public class HealthDataService {
@@ -23,17 +23,14 @@ public class HealthDataService {
     private HealthMapper healthMapper;
 
     /**
-     * 获取最新一条健康原始数据
+     * Get the latest piece of raw health data
      */
     public HeartData getNewestData(){
         return healthMapper.findAll();
     }
 
     /**
-     * 获取并存储bmi
-     * @param weight
-     * @param height
-     * @return
+     * Obtain and store bmi
      */
     public double getAndStoreBMI(double weight, double height){
         double bmi = weight/ (height*height);
@@ -43,16 +40,16 @@ public class HealthDataService {
         return bmi;
     }
     /**
-     * 获取所有bmi，以一个list返回，其中有bmi和时间
+     * Get all BMIs and return them as a list with BMI and time
      */
-    public List<HuData> getAllBMI(){
+    public List<BMIData> getAllBMI(){
        return healthMapper.getBMI();
     }
 
     /**
-     * 用于画图的数据获取，前端返回一个横坐标个数，
-     * 根据横坐标个数决定获取几个十五分钟的平均值。
-     * (血氧)
+     * For drawing data acquisition, the front end returns a number of abscissa,
+     * Take a number of 15-minute averages based on the number of horizontal coordinates.
+     * (Blood oxygen)
      */
     public List<Double> getManyAvgBOS(int count){
         List<Double> list = new ArrayList<>();
@@ -64,18 +61,18 @@ public class HealthDataService {
 
             list.add(healthMapper.findBOS(time));
 
-            timeMill = timeMill - 1000*5;
+            timeMill = timeMill - 1000*60*15;
             time = dateFormat.format(timeMill);
         }
         return list;
     }
     /**
-     * 用于画图的数据获取，前端返回一个横坐标个数，
-     * 根据横坐标个数决定获取几个十五分钟的平均值。
-     * (心率)
+     * For drawing data acquisition, the front end returns a number of abscissa,
+     * get a number of 15-minute averages based on the number of horizontal coordinates
+     * (Heart rate)
      *
      */
-    //TODO 开发测试为每五秒的平均值，正式测试改为15分钟的平均值
+
     public List<Double> getManyAvgHR(int count){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -86,7 +83,7 @@ public class HealthDataService {
         for (int i = 0; i < count; i++) {
             list.add(healthMapper.findHR(time));
 
-            timeMill -= 1000*5;
+            timeMill -= 1000*60*15;
            time = dateFormat.format(timeMill);
 
         }
@@ -94,10 +91,10 @@ public class HealthDataService {
     }
 
     /**
-     * 用于画图的数据获取，前端返回一个横坐标个数，
-     * 根据横坐标个数决定获取几个十五分钟的平均值。
-     * (睡眠)
-     * 如果数据库中没有这么多条数据就返回所有的睡眠数据
+     * For drawing data acquisition, the front end returns a number of abscissa,
+     * Take a number of 15-minute averages based on the number of horizontal coordinates。
+     * (sleep)
+     * Return all the sleep data if there is not so much data in the database
      *
      */
     @ExceptionHandler

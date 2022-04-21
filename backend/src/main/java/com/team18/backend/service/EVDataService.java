@@ -9,6 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This service provide environment data analysis result.
+ */
 @Service
 public class EVDataService {
 
@@ -16,9 +19,9 @@ public class EVDataService {
     private EVDataMapper evDataMapper;
 
     /**
-     * 用于画图的数据获取，前端返回一个横坐标个数，
-     * 根据横坐标个数决定获取几个十五分钟的平均值。
-     * (温度)
+     * For drawing data acquisition, the front end returns a number of abscissa,
+     * Take a number of 15-minute averages based on the number of horizontal coordinates.
+     * (Temperature)
      *
      */
     public List<Double> getManyAvgTemp(int count) {
@@ -30,8 +33,7 @@ public class EVDataService {
 
         for (int i = 0; i < count; i++) {
             list.add(evDataMapper.findTem(time));
-            //TODO 开发测试为每五秒的平均值，正式测试差值改为一小时
-            timeMill -= 1000*5;
+            timeMill -= 1000*60*60;
             time = dateFormat.format(timeMill);
         }
        return list;
@@ -39,7 +41,7 @@ public class EVDataService {
 
 
     /**
-     * 获取一小时内的湿度平均值
+     * Get the average humidity over an hour
      */
     public List<Double> getManyAvgHum(int count) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -50,8 +52,7 @@ public class EVDataService {
 
         for (int i = 0; i < count; i++) {
             list.add(evDataMapper.findHum(time));
-            //TODO 开发测试为每五秒的平均值，正式测试差值改为一小时
-            timeMill -= 1000*5;
+            timeMill -= 1000*60*60;
             time = dateFormat.format(timeMill);
         }
         return list;
@@ -59,7 +60,6 @@ public class EVDataService {
 
     /**
      * Obtain the average indoor noise
-     * 获取一小时内的噪音平均值
      */
     public List<Double> getManyAvgNoise(int count) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -70,8 +70,7 @@ public class EVDataService {
 
         for (int i = 0; i < count; i++) {
             list.add(evDataMapper.findVoice(time));
-            //TODO 开发测试为每五秒的平均值，正式测试差值改为一小时
-            timeMill -= 1000*5;
+            timeMill -= 1000*60*60;
             time = dateFormat.format(timeMill);
         }
         return list;
@@ -79,7 +78,7 @@ public class EVDataService {
 
 
     /**
-     * 获取半小时内光照平均值
+     * Get the average illumination in half an hour
      */
     public List<Double> getManyAvgBright(int count) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -90,15 +89,14 @@ public class EVDataService {
 
         for (int i = 0; i < count; i++) {
             list.add(evDataMapper.findBrightness(time));
-            //TODO 开发测试为每五秒的平均值，正式测试差值改为半小时
-            timeMill -= 1000*5;
+            timeMill -= 1000*60*30;
             time = dateFormat.format(timeMill);
         }
         return list;
     }
 
     /**
-     *获取半小时内空气质量
+     * Get air quality within half an hour
      */
     public List<Double> getManyAvgAQ(int count) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -109,15 +107,14 @@ public class EVDataService {
 
         for (int i = 0; i < count; i++) {
             list.add(evDataMapper.findHCHO(time));
-            //TODO 开发测试为每五秒的平均值，正式测试差值改为半小时
-            timeMill -= 1000*5;
+            timeMill -= 1000*60*30;
             time = dateFormat.format(timeMill);
         }
         return list;
     }
 
     /**
-     * 获取睡眠期间各项环境因素数据
+     * Data of various environmental factors during sleep were obtained
      */
 
     public List<EnvironmentData> getSleepEVDataList(String startTime, String endTime){
@@ -125,7 +122,7 @@ public class EVDataService {
     }
 
     /**
-     * 获取环境最新的一条数据
+     * Gets the latest piece of data for the environment
      */
     public EnvironmentData getNewestData(){
         return evDataMapper.findAll();

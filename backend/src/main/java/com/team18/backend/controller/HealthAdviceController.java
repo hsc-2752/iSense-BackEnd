@@ -6,16 +6,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * This controller controls all connection about health advice.
+ */
 @RestController
 public class HealthAdviceController {
 
-    private HealthAdviceService adviceService;
+     HealthAdviceService adviceService;
     @Autowired
     HealthAdviceController (HealthAdviceService adviceService){
         this.adviceService = adviceService;
     }
     /**
-     * 获取有关心率的建议
+     * Get advice on heart rate
      * @return heart rate advice
      */
     @RequestMapping(value = "/Advice/HeartRate",method = RequestMethod.GET)
@@ -24,7 +27,7 @@ public class HealthAdviceController {
     }
 
     /**
-     * 获取有关血氧建议
+     * Get advice on blood oxygen
      * @return blood oxygen advice
      */
     @RequestMapping(value = "/Advice/BloodOxygen",method = RequestMethod.GET)
@@ -33,7 +36,7 @@ public class HealthAdviceController {
     }
 
     /**
-     * 获取有关最新一条bmi的建议
+     * Get the latest advice on BMI
      * @return bmi advice
      */
     @RequestMapping(value = "/Advice/BMI",method = RequestMethod.GET)

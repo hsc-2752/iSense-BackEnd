@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- *
+ * This class is used to provide environment advide
  */
 @Service
 public class EnvAdviceService {
@@ -17,35 +17,35 @@ public class EnvAdviceService {
     private EVAdviceMapper adviceMapper;
 
 
-    //气压值标准
+    //stand for pressure
     private  static final double HIGH_PRESSURE_STAND = 100.0;
     private  static final double LOW_PRESSURE_STAND = 10.0;
 
-    //分贝标准值
+    //stand for decibel
     private  static final double ZERO_DECIBEL_STAND = 0.0;
     private  static final double LOW_DECIBEL_STAND = 15.0;
     private  static final double NORMAL_DECIBEL_STAND = 50.0;
     private  static final double HIGH_DECIBEL_STAND = 90.0;
 
-    //温度标准值
+    //stand for temperature
     private  static final double FIRST_LEVEL_TEMP_STAND = 11.0;
     private  static final double SECOND_LEVEL_TEMP_STAND = 18.0;
     private  static final double THIRD_LEVEL_TEMP_STAND = 25.0;
     private  static final double FOURTH_LEVEL_TEMP_STAND = 32.0;
 
-    //湿度标准值
+    //stand for humidity
     private static final double FIRST_LEVEL_HUM_STAND = 30.0;
     private static final double SECOND_LEVEL_HUM_STAND = 40.0;
     private static final double THIRD_LEVEL_HUM_STAND = 60.0;
     private static final double FOURTH_LEVEL_HUM_STAND = 80.0;
 
-    //光照标准值
+    //stand for illumination
     private static final double FIRST_LEVEL_LUX_STAND = 30.0;
     private static final double SECOND_LEVEL_LUX_STAND = 75.0;
     private static final double THIRD_LEVEL_LUX_STAND = 100.0;
-    private static final double FOURTH_LEVEL_LUX_STAND = 150.0;
+    private static final double FOURTH_LEVEL_LUX_STAND = 200.0;
 
-    //空气质量标准值
+    //Air pollution index
     private static final double FRESH_AIR_STAND = 27;
     private static final double NORMAL_AIR_STAND = 35;
     private static final double POLLUTE_AIR_STAND = 45;
@@ -53,7 +53,7 @@ public class EnvAdviceService {
 
 
     /**
-     * 获取温度和湿度的建议
+     * Get temperature and humidity recommendations
      */
     public String getTemAndHumAdvice(){
        double temp = adviceMapper.getTempAdviceData();
@@ -62,7 +62,7 @@ public class EnvAdviceService {
     }
 
     /**
-     * 获取气压的建议
+     * Suggestions for obtaining air pressure
      */
     public String getPressureAdvice(){
     double pressure = adviceMapper.getPressureAdviceData();
@@ -70,7 +70,7 @@ public class EnvAdviceService {
     }
 
     /**
-     * 获取噪音的有关建议
+     * Get advice on noise
      */
     public String getNoiseAdvice(){
        double noise = adviceMapper.getNoiseAdviceData();
@@ -78,7 +78,7 @@ public class EnvAdviceService {
     }
 
     /**
-     * 获取空气质量的有关建议
+     * Get advice on air quality
      */
     public String getAirQualityAdvice(){
         double air = adviceMapper.getAirAdviceData();
@@ -86,7 +86,7 @@ public class EnvAdviceService {
     }
 
     /**
-     * 根据光照和现在时间获取光照有关建议
+     * Get light advice based on light and the present time
      */
     public String getBrightAdvice(){
         double bright = adviceMapper.getBrightAdviceData();
@@ -95,7 +95,7 @@ public class EnvAdviceService {
     }
 
     /**
-     * 分析空气质量得到建议
+     * Analysis of air quality is recommended
      */
     private String airQualityCalculate(double air) {
     if(air<= FRESH_AIR_STAND ){
@@ -116,10 +116,10 @@ public class EnvAdviceService {
     }
 
     /**
-     * 根据时间和光照强度综合分析
-     * @param bright
-     * @param isNight
-     * @return
+     * Comprehensive analysis based on time and light intensity
+     * @param bright brightness value
+     * @param isNight Determine if it is night
+     * @return bright advice
      */
     private String brightCalculate(double bright, boolean isNight) {
         if(isNight){
@@ -171,8 +171,8 @@ public class EnvAdviceService {
     }
 
     /**
-     * 判断现在是否为夜晚
-     * @return true 为夜晚，false 为白天
+     * Determine if it is night
+     * @return true is night，false is day
      */
     private boolean timeCalculate() {
         Date date = new Date();
@@ -182,9 +182,9 @@ public class EnvAdviceService {
     }
 
     /**
-     * 分析环境气压
-     * @param pressure 十秒气压平均值
-     * @return 对这个气压分析后的结果
+     * Analysis of ambient pressure
+     * @param pressure Ten-second mean pressure
+     * @return Analysis of the pressure
      */
     private String pressureCalculate(double pressure) {
         if(pressure >LOW_PRESSURE_STAND && pressure < HIGH_PRESSURE_STAND){
@@ -199,9 +199,9 @@ public class EnvAdviceService {
     }
 
     /**
-     * 分析环境音量
+     * Analyzing environment Volume
      * @param noise
-     * @return 建议
+     * @return advice
      */
     private String noiseCalculate(double noise) {
         if(noise >=ZERO_DECIBEL_STAND && noise <=LOW_DECIBEL_STAND )
@@ -227,7 +227,7 @@ public class EnvAdviceService {
 
 
     /**
-     * 分析湿度
+     * Analysis of the humidity
      */
     private int humCalculate(double humidity) {
         int condition = 0;
@@ -248,7 +248,7 @@ public class EnvAdviceService {
 
     }
     /**
-     * 分析温度和湿度，返回建议的字符串
+     * Parses temperature and humidity and returns the suggested string
      */
     private String temAndHumCalculate(double temp, double humidity ){
         //too cold
