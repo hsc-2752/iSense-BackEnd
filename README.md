@@ -4,8 +4,12 @@ This project aims to design and develop an interactive system that integrates li
 
 ---
 ## Android Application
-Please find the installer here:
+Please find the installer here
 Make sure your installing environment is android.
+
+---
+## Application Display Video
+Please find the display video [here](./display_video/isense_new.mp4)
 
 ---
 ## Application Display
