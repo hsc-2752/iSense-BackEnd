@@ -12,33 +12,34 @@ Make sure your installing environment is android.
 
 - **Main page**
     - Loading page 
-    ![loadingpage](./img/loadingAnimation.jpg){:height="40%" width="40%"}
+    <img src="./img/loadingAnimation.jpg" width="40%">
+   
     - Emotion choosing page
-    ![chose](./img/emotionChoose.jpg){:height="40%" width="40%"}
+    <img src="./img/emotionChoose.jpg" width="40%">
     - Main page
-    ![main](./img/homePage.png){:height="40%" width="40%"}
+    <img src="./img/homePage.png" width="40%">
 - **Health page**
   - Health main page
-  ![hmain](./img/HealMain.jpeg){:height="40%" width="40%"}
+  <img src = "./img/HealMain.jpeg" width="40%">
   - BMI page
-  ![bmi](./img/BMIPage.jpeg){:height="70%" width="70%"}
+  <img src = "./img/BMIPage.jpeg" width="40%">
   - Heart rate & Blood oxygen page
-  ![hrbo](./img/HeartPage.jpeg){:height="50%" width="50%"}
-  - Sleep quality 
-  ![sleep](./img/SleepPage.jpeg){:height="60%" width="60%"}
+  <img src = "./img/HeartPage.jpeg" width = "40%">
+  - Sleep quality
+  <img src="./img/SleepPage.jpeg" width ="40%"> 
   - Emotion Page 
-  ![emotion](./img/EmotionPage.jpeg){:height="40%" width="40%"}
+  <img src="./img/EmotionPage.jpeg" width = "40%">
 - **Environment page**
   - Environment Main page
-   ![tm](./img/environment_default.jpeg){:height="40%" width="40%"}
+  <img src="./img/environment_default.jpeg" width = "40%">
   - Temperature & humidity page 
-  ![tem](./img/temperature_page.png){:height="40%" width="40%"}
+  <img src="./img/temperature_page.png" width=40%>
   - Air pollution page 
-  ![air](./img/Air_pollution_page.png){:height="70%" width="70%"}
+  <img src = "./img/Air_pollution_page.png" width = 70%>
   - Brightness page 
-  ![bright](./img/Brightness_page.png){:height="60%" width="60%"}
+  <img src="./img/Brightness_page.png" width=60%>
   - Noise page 
-  ![noise](./img/noise_page.png){:height="60%" width="60%"}
+  <img src="./img/noise_page.png" width=60%>
   
 
 #### Developer version
