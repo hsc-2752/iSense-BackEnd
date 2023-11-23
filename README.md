@@ -4,7 +4,7 @@ This project aims to design and develop an interactive system that integrates li
 
 ---
 ## Android Application
-Please find the installer here
+Please find the installer here<br/>
 Make sure your installing environment is android.
 
 ---
