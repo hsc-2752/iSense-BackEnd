@@ -16,28 +16,39 @@ Make sure your installing environment is android.
    
     - Emotion choosing page
     <img src="./img/emotionChoose.jpg" width="40%">
+
     - Main page
     <img src="./img/homePage.png" width="40%">
+
 - **Health page**
   - Health main page
   <img src = "./img/HealMain.jpeg" width="40%">
+
   - BMI page
   <img src = "./img/BMIPage.jpeg" width="40%">
+
   - Heart rate & Blood oxygen page
   <img src = "./img/HeartPage.jpeg" width = "40%">
+
   - Sleep quality
   <img src="./img/SleepPage.jpeg" width ="40%"> 
+
   - Emotion Page 
   <img src="./img/EmotionPage.jpeg" width = "40%">
+
 - **Environment page**
   - Environment Main page
   <img src="./img/environment_default.jpeg" width = "40%">
+
   - Temperature & humidity page 
   <img src="./img/temperature_page.png" width=40%>
+
   - Air pollution page 
   <img src = "./img/Air_pollution_page.png" width = 70%>
+
   - Brightness page 
   <img src="./img/Brightness_page.png" width=60%>
+  
   - Noise page 
   <img src="./img/noise_page.png" width=60%>
   
